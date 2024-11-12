@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import radacc
+from . import radacct
 from . import radcheck
 from. import radgroupcheck
 from . import radgroupreply
