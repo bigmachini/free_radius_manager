@@ -1,0 +1,4 @@
+*.pyc
+__PYCACHE__/
+./.vscode
+./.idea
