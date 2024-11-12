@@ -32,7 +32,7 @@
     <record id="action_radcheck" model="ir.actions.act_window">
         <field name="name">RADIUS Check</field>
         <field name="res_model">radcheck</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_radcheck_home" name="FreeRADIUS Manager"/>
