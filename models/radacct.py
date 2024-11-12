@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class RadAcct(models.Model):
     _name = 'radacct'
     _description = 'RADIUS Accounting'
@@ -33,3 +34,7 @@ class RadAcct(models.Model):
     delegatedipv6prefix = fields.Char(string="Delegated-IPv6-Prefix")
     acctstartdelay = fields.Integer(string="Acct-Start-Delay")
     acctstopdelay = fields.Integer(string="Acct-Stop-Delay")
+
+    _sql_constraints = [
+        ('unique_acctuniqueid', 'unique(acctuniqueid)', 'AcctUniqueId must be unique.')
+    ]
