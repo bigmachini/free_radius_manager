@@ -3,7 +3,7 @@
         <field name="name">radacct.form</field>
         <field name="model">radacct</field>
         <field name="arch" type="xml">
-            <form string="RADIUS Accounting">
+            <form create="false" string="RADIUS Accounting">
                 <sheet>
                     <group>
                         <group>

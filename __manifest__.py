@@ -9,6 +9,7 @@
         'security/ir.model.access.csv',
         'views/radcheck_views.xml',
         'views/radacct_views.xml',
+        'views/radpostauth_views.xml',
 
     ],
     'installable': True,
