@@ -5,7 +5,7 @@
         <field name="arch" type="xml">
             <list create="false" string="RADIUS Post-Auth">
                 <field name="username"/>
-                <field name="pass"/>
+                <field name="password"/>
                 <field name="reply"/>
                 <field name="authdate"/>
             </list>
@@ -20,7 +20,7 @@
                 <sheet>
                     <group>
                         <field name="username"/>
-                        <field name="pass"/>
+                        <field name="password"/>
                         <field name="reply"/>
                         <field name="authdate"/>
                     </group>
