@@ -20,12 +20,12 @@
         <field name="name">radcheck_tree</field>
         <field name="model">radcheck</field>
         <field name="arch" type="xml">
-            <tree string="RADIUS Check">
+            <list string="RADIUS Check">
                 <field name="username"/>
                 <field name="attribute"/>
                 <field name="op"/>
                 <field name="value"/>
-            </tree>
+            </list>
         </field>
     </record>
 
