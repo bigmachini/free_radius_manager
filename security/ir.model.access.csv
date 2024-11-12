@@ -1,12 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nas,nas,model_free_radius_manager_nas,base.group_user,1,1,1,1
 access_radacc,radacc,model_free_radius_manager_radacc,base.group_user,1,1,1,1
 access_radcheck,radcheck,model_free_radius_manager_radcheck,base.group_user,1,1,1,1
-access_radgroupcheck,radgroupcheck,model_free_radius_manager_radgroupcheck,base.group_user,1,1,1,1
 access_radgroupcheck,radgroupcheck,model_free_radius_manager_radgroupcheck,base.group_user,1,1,1,1
 access_radgroupreply,radgroupreply,model_free_radius_manager_radgroupreply,base.group_user,1,1,1,1
 access_radpostauth,radpostauth,model_free_radius_manager_radpostauth,base.group_user,1,1,1,1
 access_radreply,radreply,model_free_radius_manager_radreply,base.group_user,1,1,1,1
 access_radusergroup,radusergroup,model_free_radius_manager_radusergroup,base.group_user,1,1,1,1
-access_nas,nas,model_free_radius_manager_nas,base.group_user,1,1,1,1
 
 
