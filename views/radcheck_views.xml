@@ -16,8 +16,8 @@
         </field>
     </record>
 
-    <record id="view_radcheck_tree" model="ir.ui.view">
-        <field name="name">radcheck.tree</field>
+<!--    <record id="view_radcheck_tree" model="ir.ui.view">
+        <field name="name">radcheck.list</field>
         <field name="model">radcheck</field>
         <field name="arch" type="xml">
             <tree string="RADIUS Check">
@@ -27,7 +27,7 @@
                 <field name="value"/>
             </tree>
         </field>
-    </record>
+    </record>-->
 
     <record id="action_radcheck" model="ir.actions.act_window">
         <field name="name">RADIUS Check</field>
