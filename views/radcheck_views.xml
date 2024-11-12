@@ -35,6 +35,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_radcheck" name="RADIUS Check" parent="menu_radcheck_home" action="action_radcheck"/>
     <menuitem id="menu_radcheck_home" name="FreeRADIUS Manager"/>
+    <menuitem id="menu_radcheck" name="RADIUS Check" parent="menu_radcheck_home" action="action_radcheck"/>
 </odoo>
