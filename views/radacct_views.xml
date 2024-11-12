@@ -53,14 +53,13 @@
         <field name="arch" type="xml">
             <list create="false" string="RADIUS Accounting">
                 <field name="username"/>
-                <field name="nasipaddress"/>
-                <field name="nasportid"/>
+                <field name="callingstationid"/>
+                <field name="acctinputoctets"/>
+                <field name="acctoutputoctets"/>
+                <field name="acctsessiontime"/>
                 <field name="acctstarttime"/>
                 <field name="acctupdatetime"/>
                 <field name="acctstoptime"/>
-                <field name="acctsessiontime"/>
-                <field name="connectinfo_start"/>
-                <field name="connectinfo_stop"/>
             </list>
         </field>
     </record>
