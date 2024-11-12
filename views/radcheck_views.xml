@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_radcheck_form" model="ir.ui.view">
+        <field name="name">radcheck.form</field>
+        <field name="model">radcheck</field>
+        <field name="arch" type="xml">
+            <form string="RADIUS Check">
+                <sheet>
+                    <group>
+                        <field name="username"/>
+                        <field name="attribute"/>
+                        <field name="op"/>
+                        <field name="value"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_radcheck_tree" model="ir.ui.view">
+        <field name="name">radcheck.tree</field>
+        <field name="model">radcheck</field>
+        <field name="arch" type="xml">
+            <tree string="RADIUS Check">
+                <field name="username"/>
+                <field name="attribute"/>
+                <field name="op"/>
+                <field name="value"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_radcheck" model="ir.actions.act_window">
+        <field name="name">RADIUS Check</field>
+        <field name="res_model">radcheck</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_radcheck" name="RADIUS Check" parent="menu_radcheck_home" action="action_radcheck"/>
+    <menuitem id="menu_radcheck_home" name="FreeRADIUS Manager"/>
+</odoo>

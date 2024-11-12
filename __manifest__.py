@@ -8,7 +8,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/radcheck_views.xml',
-
     ],
     'installable': True,
     'application': True,
