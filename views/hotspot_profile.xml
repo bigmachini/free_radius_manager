@@ -9,7 +9,22 @@
                             type="object"
                             string="Create Profile"
                             class="btn-primary"
+                            confirm="Are you sure you want to CREATE this Profile?"
                             invisible="hotspot_profile_id != False"/>
+
+                    <button name="update_hotspot_profile"
+                            type="object"
+                            string="Update Profile"
+                            class="btn-primary"
+                            confirm="Are you sure you want to UPDATE this Profile?"
+                            invisible="hotspot_profile_id == False"/>
+
+                    <button name="delete_hotspot_profile"
+                            type="object"
+                            string="Delete Profile"
+                            class="btn-primary"
+                            confirm="Are you sure you want to DELETE this Profile?"
+                            invisible="hotspot_profile_id == False"/>
                 </header>
                 <sheet>
                     <group>

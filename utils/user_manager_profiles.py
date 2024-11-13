@@ -40,30 +40,39 @@ class UserManagerProfiles(MikroTik):
         response = self.execute("/tool/user-manager/profile/add", params)
         return response
 
-
-
-    def update_profile(self, profile_id, **kwargs):
+    def update_profile(
+            self,
+            profile_id,
+            name,
+            owner,
+            name_for_users="",
+            price=0,
+            validity="1d",
+    ):
         """
-        Update an existing User Manager profile.
+        Add a new User Manager profile.
 
-        :param profile_id: The unique ID of the profile to update.
-        :param kwargs: Key-value pairs of the fields to update.
+        :param name: The name of the User Manager profile.
+        :param name_for_users: Name to assign to users under this profile (default: "").
+        :param profile_id: ID of the profile to edit.
+        :param owner: Owner of the profile (default: "admin").
+        :param price: Price of the profile (default: 0).
+        :param validity: Validity of the profile (e.g., "1d").
         :return: The RouterOS response.
         """
-        if not profile_id:
-            raise ValueError("Profile ID is required to update a profile.")
+        params = {
+            ".id": profile_id,
+            "name": name,
+            "name-for-users": name_for_users,
+            "owner": owner,
+            'starts-at': 'logon',
+            "price": price,
+            "validity": validity,
+        }
 
-        # Include the profile ID in the command
-        params = {".id": profile_id}
-        params.update(kwargs)  # Add all the fields to be updated
-
-        try:
-            # Execute the update command
-            response = self.execute("/tool/user-manager/profile/set", params)
-            return response
-        except Exception as e:
-            print(f"Error updating profile {profile_id}: {e}")
-            return []
+        # Execute the command on the router
+        response = self.execute("/tool/user-manager/profile/set", params)
+        return response
 
     def list_profiles(self):
         """
@@ -98,4 +107,17 @@ class UserManagerProfiles(MikroTik):
 
         # Execute the command on the router
         response = self.execute("/tool/user-manager/profile/remove", params)
+        return response
+
+    def delete_profile_limitation(self, profile_id):
+        """
+        Delete a Hotspot Profile.
+
+        :param profile_id: The unique ID of the Profile.
+        :return: The RouterOS response.
+        """
+        params = {".id": profile_id}
+
+        # Execute the command on the router
+        response = self.execute("/tool/user-manager/profile/profile/remove", params)
         return response

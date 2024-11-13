@@ -8,8 +8,8 @@ from ..utils.user_manager_limitations import UserManagerLimitations
 router = UserManagerLimitations(host=host, port=port, username=username, password=password, debug=True)
 
 
-class HotspotProfileLimitation(models.Model):
-    _name = 'radius_manager.hotspot_profile_limitation'
+class HotspotLimitation(models.Model):
+    _name = 'radius_manager.hotspot_limitation'
     _description = 'Profile Limitation'
 
     name = fields.Char(string='Limitation Name', required=True, help='The name of the profile limitation')
@@ -62,9 +62,9 @@ class HotspotProfileLimitation(models.Model):
 	        
 		Example: 1G (1 GB).""")
     partner_id = fields.Many2one('res.partner', string='Partner', required=True, domain=[('is_kredoh_partner', '=', True)])
-    hotspot_profile_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
+    hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
 
-    def create_profile_limitation(self):
+    def create_limitation(self):
         """
         Create a new User Manager profile limitation.
         """
@@ -77,19 +77,20 @@ class HotspotProfileLimitation(models.Model):
             response = router.add_limitation(name=self.name, rate_limit_tx=self.rate_limit_tx,
                                              rate_limit_rx=self.rate_limit_rx, uptime_limit=self.uptime_limit,
                                              transfer_limit=self.transfer_limit, owner=self.partner_id.kredoh_username)
-            logging.info(f"Profile limitation '{response}' created successfully!")
-            profile_limitation = router.get_limitation_by_name(self.name)
-            logging.info(f"Profile limitation: {profile_limitation}")
-            if profile_limitation:
-                self.hotspot_profile_limitation_id = profile_limitation.get(".id")
+            logging.info(f"HotspotLimitation::create_limitation response --> {response}")
+
+            limitation = router.get_limitation_by_name(self.name)
+            logging.info(f"Profile limitation: {limitation}")
+            if limitation:
+                self.hotspot_limitation_id = limitation.get(".id")
         except Exception as e:
             logging.error(f"Error creating hotspot profile limitation: {e}")
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = super(HotspotProfileLimitation, self).create(vals_list)
+        res = super(HotspotLimitation, self).create(vals_list)
         return res
 
     def write(self, vals):
-        res = super(HotspotProfileLimitation, self).write(vals)
+        res = super(HotspotLimitation, self).write(vals)
         return res
