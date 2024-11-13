@@ -8,7 +8,7 @@ class ResPartner(models.Model):
     is_kredoh_partner = fields.Boolean(string="Is Kredoh Partner")
     kredoh_username = fields.Char(string="Kredoh Username" )
     unique_code = fields.Char(string="Unique Code")
-    hotspot_user_ids = fields.One2many('radius_manager.hotspot_user', 'res_partner_id', string="Hotspot Users")
+    hotspot_user_ids = fields.One2many('radius_manager.hotspot_user', 'partner_id', string="Hotspot Users")
     hotspot_user_count = fields.Integer(string="Hotspot Users Count", compute='_compute_hotspot_user_count')
 
     def write(self, vals):
