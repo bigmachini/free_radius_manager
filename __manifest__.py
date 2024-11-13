@@ -11,6 +11,8 @@
         'views/res_partner.xml',
         'views/hotspot_profile.xml',
         'views/hotspot_profile_limitations.xml',
+        'views/hotspot_user_sessions.xml',
+        'data/cron_jobs.xml',
     ],
     'installable': True,
     'application': True,

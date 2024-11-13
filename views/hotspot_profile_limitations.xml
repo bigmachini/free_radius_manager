@@ -48,7 +48,7 @@
     </record>
 
     <menuitem id="menu_hotspot_profile_limitations"
-              name="Profile Limitations"
-              parent="menu_hotspot"
+              name="Limitations"
+              parent="menu_profile_top"
               action="action_hotspot_profile_limitations"/>
 </odoo>

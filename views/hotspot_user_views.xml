@@ -41,10 +41,15 @@
         <field name="res_model">radius_manager.hotspot_user</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <menuitem id="menu_hotspot_home"
+              name="Hotspot Manager"/>
+
     <menuitem id="menu_hotspot"
               name="Hotspot"
-              parent="menu_radcheck_home"
+              parent="menu_hotspot_home"
               sequence="1"/>
+
     <menuitem id="menu_hotspot_user"
               name="Users"
               parent="menu_hotspot"

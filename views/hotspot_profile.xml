@@ -45,8 +45,13 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <menuitem id="menu_profile_top"
+              name="Profiles"
+              parent="menu_hotspot_home"/>
+
     <menuitem id="menu_hotspot_profile"
               name="Profiles"
-              parent="menu_hotspot"
-              action="action_hotspot_profile"/>
+              parent="menu_profile_top"
+              action="action_hotspot_profile"
+              sequence="1"/>
 </odoo>

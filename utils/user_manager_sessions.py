@@ -13,7 +13,7 @@ class HotspotSessionManager(MikroTik):
         :return: A list of dictionaries containing session details.
         """
         try:
-            response = self.execute("/tool/user-manager/user/print", is_list=True)
+            response = self.execute("/tool/user-manager/session/print", is_list=True)
             return response
         except Exception as e:
             print(f"Error retrieving active sessions: {e}")
