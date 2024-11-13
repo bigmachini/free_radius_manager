@@ -41,7 +41,7 @@ class HotspotProfile(models.Model):
             if profile:
                 self.hotspot_profile_id = profile.get(".id")
         except Exception as e:
-            logging.error(f"Error creating hotspot profile: {e}")
+            logging.error(f"HotspotProfile::update_hotspot_profile Error creating hotspot profile e --> {e}")
         finally:
             router.disconnect()
 
@@ -57,7 +57,7 @@ class HotspotProfile(models.Model):
                                              validity=self.validity)
             logging.info(f"HotspotProfile::update_hotspot_profile response {response}")
         except Exception as e:
-            logging.error(f"Error creating hotspot profile: {e}")
+            logging.error(f"HotspotProfile::update_hotspot_profile  Error creating hotspot profile  e --> {e}")
         finally:
             router.disconnect()
 
@@ -73,12 +73,3 @@ class HotspotProfile(models.Model):
             logging.error(f"HotspotProfile::delete_profile Exception e -->{e}")
         finally:
             router.disconnect()
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super(HotspotProfile, self).create(vals_list)
-        return res
-
-    def write(self, vals):
-        res = super(HotspotProfile, self).write(vals)
-        return res
