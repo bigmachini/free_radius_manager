@@ -12,6 +12,7 @@
         'views/radpostauth_views.xml',
         'views/hotspot_user_views.xml',
         'views/res_partner.xml',
+        'views/hotspot_profile.xml',
 
     ],
     'installable': True,

@@ -5,9 +5,9 @@ from odoo.exceptions import ValidationError
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    kredoh_username = fields.Char(string="Kredoh Username", required=[('is_kredoh_partner', '=', True)])
     is_kredoh_partner = fields.Boolean(string="Is Kredoh Partner")
-    unique_code = fields.Char(string="Unique Code", required=[('is_kredoh_partner', '=', True)])
+    kredoh_username = fields.Char(string="Kredoh Username" )
+    unique_code = fields.Char(string="Unique Code")
     hotspot_user_ids = fields.One2many('radius_manager.hotspot_user', 'res_partner_id', string="Hotspot Users")
     hotspot_user_count = fields.Integer(string="Hotspot Users Count", compute='_compute_hotspot_user_count')
 

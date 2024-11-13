@@ -1,0 +1,51 @@
+<odoo>
+    <record id="view_hotspot_profile_form" model="ir.ui.view">
+        <field name="name">hotspot.profile.form</field>
+        <field name="model">radius_manager.hotspot_profile</field>
+        <field name="arch" type="xml">
+            <form string="Hotspot Profile">
+                <header>
+                    <button name="create_hotspot_profile"
+                            type="object"
+                            string="Create Profile"
+                            class="btn-primary"
+                            invisible="hotspot_profile_id != False"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="name_for_name"/>
+                        <field name="res_partner_id"/>
+                        <field name="validity"/>
+                        <field name="price"/>
+                        <field name="hotspot_profile_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_profile_list" model="ir.ui.view">
+        <field name="name">hotspot.profile.list</field>
+        <field name="model">radius_manager.hotspot_profile</field>
+        <field name="arch" type="xml">
+            <list string="Hotspot Profiles">
+                <field name="name"/>
+                <field name="display_name"/>
+                <field name="validity"/>
+                <field name="price"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_profile" model="ir.actions.act_window">
+        <field name="name">Hotspot Profiles</field>
+        <field name="res_model">radius_manager.hotspot_profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotspot_profile"
+              name="Profiles"
+              parent="menu_hotspot"
+              action="action_hotspot_profile"/>
+</odoo>

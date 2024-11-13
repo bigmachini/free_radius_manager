@@ -1,25 +1,10 @@
 import logging
-import os
 
 from odoo import models, fields, api
+from .config import host, port, username, password
 from ..utils.user_manager_users import UserManager
 
 USER_MANAGER_PATH = "/tool/user-manager/user"
-import configparser
-
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-# Specify the full path to the config.ini file
-config_file_path = os.path.join(os.path.dirname(__file__), 'config.ini')
-
-# Read the config file
-config.read(config_file_path)
-
-host = config.get('mikrotik', 'host')
-port = config.getint('mikrotik', 'port')
-username = config.get('mikrotik', 'username')
-password = config.get('mikrotik', 'password')
 
 router = UserManager(host=host, port=port, username=username, password=password, debug=True)
 
