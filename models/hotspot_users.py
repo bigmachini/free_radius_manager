@@ -2,7 +2,6 @@ import logging
 import os
 
 from odoo import models, fields, api
-from odoo.orm.decorators import readonly
 from ..utils.user_manager_users import UserManager
 
 USER_MANAGER_PATH = "/tool/user-manager/user"

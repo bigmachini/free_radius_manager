@@ -8,8 +8,9 @@
                 <page string="Kredoh Data">
                     <group>
                         <field name="is_kredoh_partner"/>
-                        <field name="unique_code"/>
-                        <field name="hotspot_user_count"/>
+                        <field name="kredoh_username" invisible="is_kredoh_partner == False"/>
+                        <field name="unique_code" invisible="is_kredoh_partner == False"/>
+                        <field name="hotspot_user_count" invisible="is_kredoh_partner == False"/>
                     </group>
                 </page>
             </notebook>
