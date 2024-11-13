@@ -14,7 +14,7 @@
                         <field name="phone"/>
                         <field name="username"/>
                         <field name="password"/>
-                        <field name="res_partner_id"/>
+                        <field name="partner_id"/>
                         <field name="hotspot_user_id"/>
                     </group>
 
@@ -31,7 +31,7 @@
                 <field name="name"/>
                 <field name="username"/>
                 <field name="phone"/>
-                <field name="res_partner_id"/>
+                <field name="partner_id"/>
             </list>
         </field>
     </record>

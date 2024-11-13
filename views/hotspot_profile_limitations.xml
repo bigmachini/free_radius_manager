@@ -1,0 +1,54 @@
+<odoo>
+    <record id="view_hotspot_profile_limitations_form" model="ir.ui.view">
+        <field name="name">hotspot.profile.limitations.form</field>
+        <field name="model">radius_manager.hotspot_profile_limitation</field>
+        <field name="arch" type="xml">
+            <form string="Hotspot Profile Limitations">
+                <header>
+                    <button name="create_profile_limitation"
+                            type="object"
+                            invisible="hotspot_profile_limitation_id != False"
+                            string="Create Profile Limitation"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="rate_limit_rx"/>
+                        <field name="rate_limit_tx"/>
+                        <field name="uptime_limit"/>
+                        <field name="transfer_limit"/>
+                        <field name="partner_id"/>
+                        <field name="hotspot_profile_limitation_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_profile_limitations_list" model="ir.ui.view">
+        <field name="name">hotspot.profile.limitations.list</field>
+        <field name="model">radius_manager.hotspot_profile_limitation</field>
+        <field name="arch" type="xml">
+            <list string="Hotspot Profile Limitations">
+                <field name="name"/>
+                <field name="rate_limit_rx"/>
+                <field name="rate_limit_tx"/>
+                <field name="uptime_limit"/>
+                <field name="transfer_limit"/>
+                <field name="partner_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_profile_limitations" model="ir.actions.act_window">
+        <field name="name">Hotspot Profile Limitations</field>
+        <field name="res_model">radius_manager.hotspot_profile_limitation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotspot_profile_limitations"
+              name="Profile Limitations"
+              parent="menu_hotspot"
+              action="action_hotspot_profile_limitations"/>
+</odoo>

@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from .config import host, port, username, password
 from ..utils.usermanager_profiles import UserManagerProfiles
 import logging
@@ -12,8 +13,9 @@ class HotspotProfile(models.Model):
 
     name = fields.Char(string='Profile Name', required=True)
     name_for_name = fields.Char(string='Display Name', required=True,
-                               help='The name to display on the hotspot login page.')
-    res_partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+                                help='The name to display on the hotspot login page.')
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                     domain=[('is_kredoh_partner', '=', True)])
     validity = fields.Char(string='Validity', required=True,
                            help='The validity of the profile in seconds(s),minutes(m),hours(h),days(d) or unlimited')
     price = fields.Float(string='Price', required=True)
@@ -23,9 +25,14 @@ class HotspotProfile(models.Model):
         """
         Create a new User Manager profile.
         """
+
+        if self.partner_id.kredo_username is None:
+            raise ValidationError("Kredoh Username is required to create a user.")
+
         try:
             router.connect()
-            response = router.add_profile(name=self.name, name_for_users=self.display_name, price=self.price,
+            response = router.add_profile(name=self.name, owner=self.partner_id.kredoh_username,
+                                          name_for_users=self.display_name, price=self.price,
                                           validity=self.validity)
             logging.info(f"Profile '{response}' created successfully!")
             profile = router.get_profile_by_name(self.name)

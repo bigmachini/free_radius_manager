@@ -10,6 +10,7 @@ from . import radpostauth
 from . import nas
 from . import hotspot_users
 from . import hotspot_profile
+from . import hotspot_profile_limitations
 from . import res_partner
 
 

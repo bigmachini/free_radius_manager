@@ -1,6 +1,7 @@
 import logging
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from .config import host, port, username, password
 from ..utils.user_manager_users import UserManager
 
@@ -17,8 +18,8 @@ class HotspotUser(models.Model):
     username = fields.Char(string="Username", readonly=True)
     password = fields.Integer(string="password", readonly=True)
     phone = fields.Char(string="Phone")
-    res_partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
-                                     required=True, readonly=True)
+    partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
+                                 required=True, readonly=True)
     hotspot_user_id = fields.Char(string="Hotspot User ID", readonly=True)
 
     @api.model_create_multi
@@ -34,10 +35,13 @@ class HotspotUser(models.Model):
         """
         Create a new User Manager user.
         """
+        if self.partner_id.kredo_username is None:
+            raise ValidationError("Kredoh Username is required to create a user.")
 
         try:
             router.connect()
-            response = router.create_user(username=self.username, password=self.password, customer="fran_beauty")
+            response = router.create_user(username=self.username, password=self.password,
+                                          customer=self.partner_id.kredoh_username)
             logging.info(f"User '{response}' created successfully!")
             user = router.get_user_username(username=self.username)
             logging.info(f"User: {user}")

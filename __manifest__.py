@@ -13,6 +13,7 @@
         'views/hotspot_user_views.xml',
         'views/res_partner.xml',
         'views/hotspot_profile.xml',
+        'views/hotspot_profile_limitations.xml',
 
     ],
     'installable': True,

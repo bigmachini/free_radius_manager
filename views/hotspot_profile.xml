@@ -15,7 +15,7 @@
                     <group>
                         <field name="name"/>
                         <field name="name_for_name"/>
-                        <field name="res_partner_id"/>
+                        <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="price"/>
                         <field name="hotspot_profile_id"/>
@@ -34,6 +34,7 @@
                 <field name="display_name"/>
                 <field name="validity"/>
                 <field name="price"/>
+                <field name="partner_id"/>
             </list>
         </field>
     </record>

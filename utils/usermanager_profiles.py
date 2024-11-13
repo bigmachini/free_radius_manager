@@ -10,8 +10,8 @@ class UserManagerProfiles(MikroTik):
     def add_profile(
             self,
             name,
+            owner,
             name_for_users="",
-            owner="admin",
             price=0,
             validity="1d",
     ):
@@ -39,6 +39,8 @@ class UserManagerProfiles(MikroTik):
         # Execute the command on the router
         response = self.execute("/tool/user-manager/profile/add", params)
         return response
+
+
 
     def update_profile(self, profile_id, **kwargs):
         """
