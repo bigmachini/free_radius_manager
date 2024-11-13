@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_radius_manager.hotspot_user,radius_manager.hotspot_user,model_radius_manager_hotspot_user,base.group_user,1,1,1,1
+access_radius_manager.hotspot_package,radius_manager.hotspot_package,model_radius_manager_hotspot_package,base.group_user,1,1,1,1
 access_radius_manager.hotspot_user_session,radius_manager.hotspot_user_session,model_radius_manager_hotspot_user_session,base.group_user,1,1,1,1
 access_radius_manager.hotspot_profile,radius_manager.hotspot_profile,model_radius_manager_hotspot_profile,base.group_user,1,1,1,1
 access_radius_manager.hotspot_profile_limitation,radius_manager.hotspot_profile_limitation,model_radius_manager_hotspot_profile_limitation,base.group_user,1,1,1,1

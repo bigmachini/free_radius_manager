@@ -1,8 +1,9 @@
+import logging
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from .config import host, port, username, password
-from ..utils.usermanager_profiles import UserManagerProfiles
-import logging
+from ..utils.user_manager_profiles import UserManagerProfiles
 
 router = UserManagerProfiles(host=host, port=port, username=username, password=password, debug=True)
 
@@ -26,7 +27,7 @@ class HotspotProfile(models.Model):
         Create a new User Manager profile.
         """
 
-        if self.partner_id.kredo_username is None:
+        if self.partner_id.kredoh_username is None:
             raise ValidationError("Kredoh Username is required to create a user.")
 
         try:

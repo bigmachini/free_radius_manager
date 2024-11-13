@@ -1,13 +1,9 @@
-import logging
 import hashlib
-from idlelib.pyparse import trans
+import logging
 
-from reportlab.graphics.transform import transformPoint
-
-from odoo import models, fields, api
-
-from ..utils.user_manager_sessions import HotspotSessionManager
+from odoo import models, fields
 from .config import host, port, username, password
+from ..utils.user_manager_sessions import HotspotSessionManager
 
 router = HotspotSessionManager(host=host, port=port, username=username, password=password, debug=True)
 

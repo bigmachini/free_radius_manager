@@ -19,7 +19,7 @@ class HotspotUser(models.Model):
     password = fields.Integer(string="password", readonly=True)
     phone = fields.Char(string="Phone")
     partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
-                                 required=True, readonly=True)
+                                 required=True)
     hotspot_user_id = fields.Char(string="Hotspot User ID", readonly=True)
 
     @api.model_create_multi
@@ -35,7 +35,7 @@ class HotspotUser(models.Model):
         """
         Create a new User Manager user.
         """
-        if self.partner_id.kredo_username is None:
+        if self.partner_id.kredoh_username is None:
             raise ValidationError("Kredoh Username is required to create a user.")
 
         try:

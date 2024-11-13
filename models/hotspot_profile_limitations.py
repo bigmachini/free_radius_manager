@@ -1,8 +1,9 @@
+import logging
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from ..utils.usermanager_limitations import UserManagerLimitations
 from .config import host, port, username, password
-import logging
+from ..utils.user_manager_limitations import UserManagerLimitations
 
 router = UserManagerLimitations(host=host, port=port, username=username, password=password, debug=True)
 

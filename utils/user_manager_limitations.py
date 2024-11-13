@@ -1,5 +1,6 @@
-from .mikrotik import MikroTik
 import logging
+
+from .mikrotik import MikroTik
 
 
 class UserManagerLimitations(MikroTik):
@@ -84,33 +85,7 @@ class UserManagerLimitations(MikroTik):
             print(f"Error updating limitation {limitation_id}: {e}")
             return []
 
-    def associate_limitation(
-            self, profile_name, limitation_name, from_time="0s", till_time="23h59m59s", weekdays=None
-    ):
-        """
-        Associate a limitation with a User Manager profile.
 
-        :param profile_name: Name of the profile.
-        :param limitation_name: Name of the limitation.
-        :param from_time: Start time (default: "0s").
-        :param till_time: End time (default: "23h59m59s").
-        :param weekdays: Days for the limitation (e.g., "sunday,monday,tuesday").
-        :return: The RouterOS response.
-        """
-        if not weekdays:
-            weekdays = "sunday,monday,tuesday,wednesday,thursday,friday,saturday"
-
-        params = {
-            "profile": profile_name,
-            "limitation": limitation_name,
-            "from-time": from_time,
-            "till-time": till_time,
-            "weekdays": weekdays,
-        }
-
-        # Execute the command on the router
-        response = self.execute("/tool/user-manager/profile/profile-limitation/add", params)
-        return response
 
     def list_limitations(self):
         """

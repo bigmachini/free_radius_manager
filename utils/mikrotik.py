@@ -1,9 +1,10 @@
 
-import socket
 import hashlib
+import logging
+import socket
 import struct
 import time
-import logging
+
 from .utils import encode_length, _parse_response_list, _parse_response
 
 

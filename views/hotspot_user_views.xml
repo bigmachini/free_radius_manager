@@ -5,8 +5,11 @@
         <field name="arch" type="xml">
             <form string="Hotspot User">
                 <header>
-                    <button name="create_hotspot_user" type="object" string="Create Hotspot User"
-                            class="btn-primary"/>
+                    <button name="create_hotspot_user"
+                            type="object"
+                            string="Create Hotspot User"
+                            class="btn-primary"
+                            invisible="hotspot_user_id != False"/>
                 </header>
                 <sheet>
                     <group>

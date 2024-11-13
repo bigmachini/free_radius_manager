@@ -1,0 +1,70 @@
+<odoo>
+    <record id="view_hotspot_package_form" model="ir.ui.view">
+        <field name="name">hotspot.package.form</field>
+        <field name="model">radius_manager.hotspot_package</field>
+        <field name="arch" type="xml">
+            <form string="Hotspot Package">
+                <header>
+                    <button name="create_hotspot_package"
+                            type="object"
+                            string="Create Package"
+                            class="btn-primary"
+                            invisible="hotspot_package_id != False"/>
+
+                    <button name="update_hotspot_package"
+                            type="object"
+                            string="Update Package"
+                            class="btn-primary"
+                            invisible="hotspot_package_id == False"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Package Details" name="package_details">
+                            <field name="name"/>
+                            <field name="hotspot_profile_id" options="{'no_create': True}"/>
+                            <field name="hotspot_profile_limitation_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="Time Active" name="time_active">
+                            <field name="from_time" widget="float_time"/>
+                            <field name="till_time" widget="float_time"/>
+                        </group>
+                        <group string="Days of Week Active" name="week_days">
+                            <field name="monday"/>
+                            <field name="tuesday"/>
+                            <field name="wednesday"/>
+                            <field name="thursday"/>
+                            <field name="friday"/>
+                            <field name="saturday"/>
+                            <field name="sunday"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_package_tree" model="ir.ui.view">
+        <field name="name">hotspot.package.tree</field>
+        <field name="model">radius_manager.hotspot_package</field>
+        <field name="arch" type="xml">
+            <list string="Hotspot Package">
+                <field name="name"/>
+                <field name="hotspot_profile_id"/>
+                <field name="hotspot_profile_limitation_id"/>
+                <field name="from_time"/>
+                <field name="till_time"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_package" model="ir.actions.act_window">
+        <field name="name">Hotspot Packages</field>
+        <field name="res_model">radius_manager.hotspot_package</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotspot_package"
+              name="Hotspot Packages"
+              parent="menu_profile_top"
+              action="action_hotspot_package"/>
+</odoo>

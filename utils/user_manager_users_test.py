@@ -1,5 +1,6 @@
-from user_manager_users import UserManager
 import configparser
+
+from user_manager_users import UserManager
 
 config = configparser.ConfigParser()
 config.read('config.ini')

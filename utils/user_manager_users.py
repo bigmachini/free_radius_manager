@@ -1,5 +1,7 @@
-from .mikrotik import MikroTik
 import logging
+
+from .mikrotik import MikroTik
+
 
 class UserManager(MikroTik):
     """
@@ -66,29 +68,56 @@ class UserManager(MikroTik):
                 }
         return None
 
-    def update_user(self, username, **kwargs):
+    def get_user_id(self, user_id):
         """
-        Update an existing user's details.
+        Get the user ID for a specific username.
 
-        :param username: Username of the user to update.
-        :param kwargs: Key-value pairs of the fields to update.
+        :param username: The username to search for.
+        :return: The user ID, or None if the user does not exist.
+        """
+        users = self.list_users()
+        for user in users:
+            if user.get(".id") == user_id:
+                return {
+                    ".id": user.get(".id"),
+                    "username": user.get("username"),
+                    "password": user.get("password"),
+                    "customer": user.get("customer"),
+                    "disabled": user.get("disabled"),
+                }
+        return None
+
+    def update_user(self, user_id, username, password, customer, shared_users=None):
+        """
+        Create a new user in User Manager.
+
+        :param username: Username for the new user.
+        :param password: Password for the new user.
+        :param customer: customer of the user (default: "admin").
+        :param shared_users: Number of shared users (default: None).
         :return: The RouterOS response.
         """
-        # Find the user ID based on the username
-        user = self.get_user_username(username)
-        if not user:
-            raise ValueError(f"User {username} does not exist.")
+        if not username:
+            raise ValueError("Username is required to create a user.")
+        if not password:
+            raise ValueError("Password is required to create a user.")
+        if not customer:
+            raise ValueError("Customer is required to create a user.")
 
-        if 'shared_users' in kwargs:
-            user['shared-users'] = kwargs.pop('shared_users')
-        user.update(kwargs)
+        params = {
+            ".id": user_id,
+            "username": username,
+            "password": password,
+            "customer": customer,
+        }
+        if shared_users:
+            params["shared-users"] = shared_users
 
         try:
-            logging.info('user', user)
-            response = self.execute("/tool/user-manager/user/set", user)
+            response = self.execute("/tool/user-manager/user/set", params)
             return response
         except Exception as e:
-            logging.info(f"UserManager::update_user:: Error updating user {username}: {e}")
+            logging.info(f"Error creating user {username}: {e}")
             return []
 
     def list_users(self):
@@ -148,45 +177,6 @@ class UserManager(MikroTik):
         except Exception as e:
             logging.info(f"Error assigning user {username} to group {group}: {e}")
             return []
-
-    def list_profiles(self):
-        """
-        List all profiles in User Manager.
-
-        :return: A list of profiles.
-        """
-        try:
-            response = self.execute("/tool/user-manager/profile/logging.info")
-            return response
-        except Exception as e:
-            logging.info(f"Error listing profiles: {e}")
-            return []
-
-    def validate_profile(self, profile_name):
-        """
-        Validate if a profile exists in User Manager.
-
-        :param profile_name: The name of the profile to validate.
-        :return: True if the profile exists, False otherwise.
-        """
-        profiles = self.list_profiles()
-        for profile in profiles:
-            if profile.get("name") == profile_name:
-                return True
-        return False
-
-    def get_profile_id(self, profile_name):
-        """
-        Get the profile ID for a specific profile name.
-
-        :param profile_name: The profile name to search for.
-        :return: The profile ID, or None if the profile does not exist.
-        """
-        profiles = self.list_profiles()
-        for profile in profiles:
-            if profile.get("name") == profile_name:
-                return profile.get(".id")
-        return None
 
     def assign_profile_to_user(self, username, profile_name):
         """
