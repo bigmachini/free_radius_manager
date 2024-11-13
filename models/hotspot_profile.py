@@ -68,6 +68,7 @@ class HotspotProfile(models.Model):
         try:
             router.connect()
             response = router.delete_profile(self.hotspot_profile_id)
+            self.hotspot_profile_id = None
             logging.info(f"HotspotProfile::delete_profile  response {response}!")
         except Exception as e:
             logging.error(f"HotspotProfile::delete_profile Exception e -->{e}")

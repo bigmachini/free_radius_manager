@@ -82,7 +82,8 @@ class HotspotProfileLimitation(models.Model):
         try:
             router.connect()
 
-            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name, self.hotspot_limitation_id.name)
+            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                       self.hotspot_limitation_id.name)
             if not profile_limitation:
                 response = router.create_profile_limitation(
                     profile_name=self.hotspot_profile_id.name, limitation_name=self.hotspot_limitation_id.name,
@@ -92,12 +93,15 @@ class HotspotProfileLimitation(models.Model):
 
                 logging.info(f"Profile '{response}' created successfully!")
 
-            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name, self.hotspot_limitation_id.name)
-            logging.info(f"HotspotProfileLimitation::create_hotspot_profile_limitation profile_limitation --> {profile_limitation}")
+            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                       self.hotspot_limitation_id.name)
+            logging.info(
+                f"HotspotProfileLimitation::create_hotspot_profile_limitation profile_limitation --> {profile_limitation}")
             if profile_limitation:
                 self.hotspot_profile_limitation_id = profile_limitation.get(".id")
             else:
-                raise ValidationError(f"HotspotProfileLimitation::create_hotspot_profile_limitation profile_limitation not created")
+                raise ValidationError(
+                    f"HotspotProfileLimitation::create_hotspot_profile_limitation profile_limitation not created")
         except Exception as e:
             logging.error(f"HotspotProfileLimitation::create_hotspot_profile_limitation Exception e -->{e}")
         finally:
@@ -109,7 +113,8 @@ class HotspotProfileLimitation(models.Model):
         """
         try:
             router.connect()
-            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name, self.hotspot_limitation_id.name)
+            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                       self.hotspot_limitation_id.name)
             if not profile_limitation:
                 raise ValidationError("profile_limitation does not exist.")
 
@@ -120,7 +125,8 @@ class HotspotProfileLimitation(models.Model):
                 weekdays=self.get_active_weekdays()
             )
 
-            logging.info(f"HotspotProfileLimitation::update_profile_limitation  Profile '{response}' updated successfully!")
+            logging.info(
+                f"HotspotProfileLimitation::update_profile_limitation  Profile '{response}' updated successfully!")
         except Exception as e:
             logging.error(f"HotspotProfileLimitation::update_profile_limitation Exception e -->{e}")
         finally:
@@ -132,13 +138,16 @@ class HotspotProfileLimitation(models.Model):
         """
         try:
             router.connect()
-            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name, self.hotspot_limitation_id.name)
-            logging.info(f"HotspotProfileLimitation::delete_profile_limitation  profile_limitation {profile_limitation}!")
+            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                       self.hotspot_limitation_id.name)
+            logging.info(
+                f"HotspotProfileLimitation::delete_profile_limitation  profile_limitation {profile_limitation}!")
 
             if not profile_limitation:
                 raise ValidationError("profile_limitation does not exist.")
 
             response = router.delete_profile_limitation(self.hotspot_profile_limitation_id)
+            self.hotspot_profile_limitation_id = None
             logging.info(f"HotspotProfileLimitation::delete_profile_limitation  response {response}!")
         except Exception as e:
             logging.error(f"HotspotProfileLimitation::delete_profile_limitation Exception e -->{e}")
