@@ -1,0 +1,46 @@
+<odoo>
+    <record id="view_hotspot_user_form" model="ir.ui.view">
+        <field name="name">hotspot.user.form</field>
+        <field name="model">radius_manager.hotspot_user</field>
+        <field name="arch" type="xml">
+            <form string="Hotspot User">
+                <header>
+                    <button name="create_hotspot_user" type="object" string="Create Hotspot User"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="phone"/>
+                        <field name="username"/>
+                        <field name="password"/>
+                        <field name="res_partner_id"/>
+                        <field name="hotspot_user_id"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_user_list" model="ir.ui.view">
+        <field name="name">hotspot.user.list</field>
+        <field name="model">radius_manager.hotspot_user</field>
+        <field name="arch" type="xml">
+            <list string="Hotspot Users">
+                <field name="name"/>
+                <field name="username"/>
+                <field name="phone"/>
+                <field name="res_partner_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_user" model="ir.actions.act_window">
+        <field name="name">Hotspot Users</field>
+        <field name="res_model">radius_manager.hotspot_user</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotspot_user" name="Hotspot Users" parent="menu_radcheck_home" action="action_hotspot_user"/>
+</odoo>

@@ -7,5 +7,7 @@ access_radgroupreply,radgroupreply,model_radgroupreply,base.group_user,1,1,1,1
 access_radpostauth,radpostauth,model_radpostauth,base.group_user,1,1,1,1
 access_radreply,radreply,model_radreply,base.group_user,1,1,1,1
 access_radusergroup,radusergroup,model_radusergroup,base.group_user,1,1,1,1
+access_radius_manager.hotspot_user,radius_manager.hotspot_user,model_radius_manager_hotspot_user,base.group_user,1,1,1,1
+
 
 

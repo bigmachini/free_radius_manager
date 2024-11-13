@@ -2,3 +2,5 @@
 __PYCACHE__/
 ./.vscode
 ./.idea
+config.ini
+.idea

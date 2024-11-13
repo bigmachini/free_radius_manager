@@ -1,7 +1,7 @@
 {
-    'name': 'FreeRADIUS Management',
+    'name': 'RADIUS Management',
     'version': '1.0',
-    'summary': 'Manage FreeRADIUS attributes and accounting records',
+    'summary': 'Manage RADIUS attributes and accounting records',
     'category': 'Tools',
     'author': 'Bigmachini Enterprises LTD',
     'depends': ['base'],
@@ -10,6 +10,8 @@
         'views/radcheck_views.xml',
         'views/radacct_views.xml',
         'views/radpostauth_views.xml',
+        'views/hotspot_user_views.xml',
+        'views/res_partner.xml',
 
     ],
     'installable': True,
