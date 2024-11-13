@@ -7,14 +7,10 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
-        'views/radcheck_views.xml',
-        'views/radacct_views.xml',
-        'views/radpostauth_views.xml',
         'views/hotspot_user_views.xml',
         'views/res_partner.xml',
         'views/hotspot_profile.xml',
         'views/hotspot_profile_limitations.xml',
-
     ],
     'installable': True,
     'application': True,

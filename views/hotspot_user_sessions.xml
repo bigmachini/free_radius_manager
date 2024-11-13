@@ -1,0 +1,64 @@
+<odoo>
+    <record id="view_hotspot_user_session_form" model="ir.ui.view">
+        <field name="name">hotspot.user.session.form</field>
+        <field name="model">radius_manager.hotspot_user_session</field>
+        <field name="arch" type="xml">
+            <form string="User Sessions" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="customer" readonly="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="hotspot_user" readonly="1"/>
+                        <field name="hotspot_user_id" readonly="1"/>
+                        <field name="calling_station_id" readonly="1"/>
+                        <field name="acct_session_id" readonly="1"/>
+                        <field name="user_ip" readonly="1"/>
+                        <field name="host_ip" readonly="1"/>
+                        <field name="status" readonly="1"/>
+                        <field name="start_time" readonly="1"/>
+                        <field name="end_time" readonly="1"/>
+                        <field name="terminate_cause" readonly="1"/>
+                        <field name="uptime" readonly="1"/>
+                        <field name="download" readonly="1"/>
+                        <field name="upload" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_user_session_list" model="ir.ui.view">
+        <field name="name">hotspot.user.session.list</field>
+        <field name="model">radius_manager.hotspot_user_session</field>
+        <field name="arch" type="xml">
+            <list string="User Sessions" create="false" edit="false">
+                <field name="customer"/>
+                <field name="partner_id"/>
+                <field name="hotspot_user"/>
+                <field name="hotspot_user_id"/>
+                <field name="calling_station_id"/>
+                <field name="acct_session_id"/>
+                <field name="user_ip"/>
+                <field name="host_ip"/>
+                <field name="status"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="terminate_cause"/>
+                <field name="uptime"/>
+                <field name="download"/>
+                <field name="upload"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_user_session" model="ir.actions.act_window">
+        <field name="name">User Sessions</field>
+        <field name="res_model">radius_manager.hotspot_user_session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hotspot_user_session"
+              name="User Sessions"
+              parent="menu_hotspot"
+              action="action_hotspot_user_session"/>
+</odoo>
