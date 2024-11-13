@@ -81,9 +81,9 @@ class HotspotUserSession(models.Model):
             for session in sessions:
                 del session['.id']
 
-                unique_session_id = HotspotUserSession.get_unique_session_id(session['host-ip'],
-                                                                             session['acct-session-id'],
-                                                                             session['calling-station-id'])
+                unique_session_id = HotspotUserSession.get_unique_session_id(session.get('host-ip', None),
+                                                                             session.get('acct-session-id', None),
+                                                                             session.get('calling-station-id', None))
 
                 # Check if the session already exists
                 if self.env['radius_manager.hotspot_user_session'].search_count(

@@ -39,15 +39,41 @@ class HotspotLimitation(models.Model):
     		    G for gigabits per second (e.g., 1G).
 
     		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
+    rate_limit_min_rx = fields.Char(string='Rate Limit Min Download', required=True, help="""
+        Sets the bandwidth limitation for the profile.
+
+    		Allowed Values:
+    	     Format: <Rx>
+    		    Rx: Download speed.
+
+    		Units:
+    	    	k for kilobits per second (e.g., 512k).
+    	        M for megabits per second (e.g., 10M).
+    		    G for gigabits per second (e.g., 1G).
+
+    		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
+    rate_limit_min_tx = fields.Char(string='Rate Limit Min Upload', required=True, help="""
+            Sets the bandwidth limitation for the profile.
+
+        		Allowed Values:
+        	     Format: <Tx>
+        		    Tx: Upload speed.
+
+        		Units:
+        	    	k for kilobits per second (e.g., 512k).
+        	        M for megabits per second (e.g., 10M).
+        		    G for gigabits per second (e.g., 1G).
+
+        		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
     uptime_limit = fields.Char(string='Uptime Limit', required=True, help="""
     The total time a user can stay online.
     
 	   Allowed Values:
             Format: <D H:M:S>
-                D: Days.
-                H: Hours.
-                M: Minutes.
-                S: Seconds.
+                d: Days.
+                h: Hours.
+                m: Minutes.
+                s: Seconds.
                 
 		Special Value: unlimited (no uptime restriction).
 		
@@ -61,7 +87,8 @@ class HotspotLimitation(models.Model):
 	        Special Value: unlimited (no data restriction).
 	        
 		Example: 1G (1 GB).""")
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True, domain=[('is_kredoh_partner', '=', True)])
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                 domain=[('is_kredoh_partner', '=', True)])
     hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
 
     def create_limitation(self):
@@ -74,23 +101,56 @@ class HotspotLimitation(models.Model):
         try:
             router.connect()
 
-            response = router.add_limitation(name=self.name, rate_limit_tx=self.rate_limit_tx,
-                                             rate_limit_rx=self.rate_limit_rx, uptime_limit=self.uptime_limit,
-                                             transfer_limit=self.transfer_limit, owner=self.partner_id.kredoh_username)
+            response = router.add_limitation(name=self.name,
+                                             rate_limit_tx=self.rate_limit_tx,
+                                             rate_limit_rx=self.rate_limit_rx,
+                                             rate_limit_min_tx=self.rate_limit_min_tx,
+                                             rate_limit_min_rx=self.rate_limit_min_rx,
+                                             uptime_limit=self.uptime_limit.lower(),
+                                             transfer_limit=self.transfer_limit,
+                                             owner=self.partner_id.kredoh_username)
             logging.info(f"HotspotLimitation::create_limitation response --> {response}")
 
-            limitation = router.get_limitation_by_name(self.name)
-            logging.info(f"Profile limitation: {limitation}")
+            limitation = router.get_limitation_by_identifier(self.hotspot_limitation_id, self.name)
+            logging.info(f"HotspotLimitation::create_limitation limitation --> {limitation}")
             if limitation:
                 self.hotspot_limitation_id = limitation.get(".id")
         except Exception as e:
-            logging.error(f"Error creating hotspot profile limitation: {e}")
+            logging.error(f"HotspotLimitation::create_limitation Error creating hotspot profile limitation e --> {e}")
+        finally:
+            router.disconnect()
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super(HotspotLimitation, self).create(vals_list)
-        return res
+    def update_limitation(self):
+        """
+        Update Limitation.
+        """
+        try:
+            router.connect()
 
-    def write(self, vals):
-        res = super(HotspotLimitation, self).write(vals)
-        return res
+            response = router.update_limitation(limitation_id=self.hotspot_limitation_id, name=self.name,
+                                                rate_limit_tx=self.rate_limit_tx,
+                                                rate_limit_rx=self.rate_limit_rx,
+                                                rate_limit_min_tx=self.rate_limit_min_tx,
+                                                rate_limit_min_rx=self.rate_limit_min_rx,
+                                                uptime_limit=self.uptime_limit,
+                                                transfer_limit=self.transfer_limit,
+                                                owner=self.partner_id.kredoh_username)
+            logging.info(f"HotspotLimitation::update_limitation response --> {response}")
+        except Exception as e:
+            logging.error(f"HotspotLimitation::create_limitation Error creating hotspot profile limitation e --> {e}")
+        finally:
+            router.disconnect()
+
+    def delete_limitation(self):
+        """
+        Delete an existing Hotspot profile.
+        """
+        try:
+            router.connect()
+            response = router.delete_limitation(self.hotspot_limitation_id)
+            self.hotspot_limitation_id = None
+            logging.info(f"HotspotLimitation::delete_profile  response {response}!")
+        except Exception as e:
+            logging.error(f"HotspotLimitation::delete_profile Exception e -->{e}")
+        finally:
+            router.disconnect()

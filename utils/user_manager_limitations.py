@@ -10,47 +10,51 @@ class UserManagerLimitations(MikroTik):
             owner,
             rate_limit_rx=None,
             rate_limit_tx=None,
+            rate_limit_min_rx=None,
+            rate_limit_min_tx=None,
             transfer_limit=None,
             uptime_limit="60m",
     ):
         """
-        Add a new User Manager profile limitation.
-
+        Add a limitation Profile.
         :param name: Name of the limitation.
+        :param owner: One of the profile.
         :param rate_limit_rx: Download speed (e.g., "1M").
         :param rate_limit_tx: Upload speed (e.g., "1M").
-        :param rate_limit_burst_rx: Burst download speed (e.g., "2M").
-        :param rate_limit_burst_tx: Burst upload speed (e.g., "2M").
-        :param rate_limit_min_rx: Minimum download speed (e.g., "512k").
-        :param rate_limit_min_tx: Minimum upload speed (e.g., "512k").
+        :param rate_limit_min_rx: Download speed (e.g., "1M").
+        :param rate_limit_min_tx: Upload speed (e.g., "1M").
         :param transfer_limit: Data transfer limit (e.g., "1000B").
-        :param upload_limit: Upload limit (e.g., "1000B").
-        :param download_limit: Download limit (e.g., "1000B").
         :param uptime_limit: Maximum uptime (default: "0s").
         :return: The RouterOS response.
         """
-        params = {"name": name, "uptime-limit": uptime_limit, "owner": owner}
+
+        params = {"name": name, "uptime-limit": uptime_limit.lower(), "owner": owner}
         if rate_limit_rx:
-            params["rate-limit-rx"] = rate_limit_rx
+            params["rate-limit-rx"] = rate_limit_rx.upper()
         if rate_limit_tx:
-            params["rate-limit-tx"] = rate_limit_tx
+            params["rate-limit-tx"] = rate_limit_tx.upper()
+        if rate_limit_min_rx:
+            params["rate-limit-min-rx"] = rate_limit_min_rx.upper()
+        if rate_limit_min_tx:
+            params["rate-limit-min-tx"] = rate_limit_min_tx.upper()
         if transfer_limit:
-            params["transfer-limit"] = transfer_limit
+            params["transfer-limit"] = transfer_limit.upper()
 
         # Execute the command on the router
         response = self.execute("/tool/user-manager/profile/limitation/add", params)
         return response
 
-    def get_limitation_by_name(self, profile_name):
+    def get_limitation_by_identifier(self, profile_id=None, profile_name=None):
         """
-        Get the user ID for a specific username.
+        Get Limitation by Profile Name.
 
-        :param username: The username to search for.
+        :param profile_name: The username to search for.
+        :param profile_id: ID of the profile.
         :return: The user ID, or None if the user does not exist.
         """
         profiles = self.list_limitations()
         for profile in profiles:
-            if profile.get("name") == profile_name:
+            if profile.get("name") == profile_name or profile.get(".id") == profile_id:
                 return {
                     ".id": profile.get(".id"),
                     "name": profile.get("name"),
@@ -62,30 +66,37 @@ class UserManagerLimitations(MikroTik):
                 }
         return None
 
-    def update_limitation(self, limitation_id, **kwargs):
+    def update_limitation(self, limitation_id, name, owner, rate_limit_rx, rate_limit_tx, rate_limit_min_rx,
+                          rate_limit_min_tx, transfer_limit,
+                          uptime_limit="60m",
+                          ):
         """
-        Update an existing User Manager limitation.
-
-        :param limitation_id: The unique ID of the limitation to update.
-        :param kwargs: Key-value pairs of the fields to update.
+        Update a limitation Profile.
+        :param limitation_id: ID of limitation to update.
+        :param name: Name of the limitation.
+        :param owner: One of the profile.
+        :param rate_limit_rx: Download speed (e.g., "1M").
+        :param rate_limit_tx: Upload speed (e.g., "1M").
+        :param rate_limit_min_rx: Download Min speed (e.g., "1M").
+        :param rate_limit_min_tx: Upload Min speed (e.g., "1M").
+        :param transfer_limit: Data transfer limit (e.g., "1000B").
+        :param uptime_limit: Maximum uptime (default: "0s").
         :return: The RouterOS response.
         """
-        if not limitation_id:
-            raise ValueError("Limitation ID is required to update a limitation.")
+        params = {".id": limitation_id,
+                  "name": name,
+                  "uptime-limit": uptime_limit.lower(),
+                  "owner": owner,
+                  "rate-limit-rx": rate_limit_rx.upper(),
+                  "rate-limit-tx": rate_limit_tx.upper(),
+                  "rate-limit-min-rx": rate_limit_min_rx.upper(),
+                  "rate-limit-min-tx": rate_limit_min_tx.upper(),
+                  "transfer-limit": transfer_limit.upper(),
+                  }
 
-        # Include the limitation ID in the command
-        params = {".id": limitation_id}
-        params.update(kwargs)  # Add all the fields to be updated
-
-        try:
-            # Execute the update command
-            response = self.execute("/tool/user-manager/profile/limitation/set", params)
-            return response
-        except Exception as e:
-            print(f"Error updating limitation {limitation_id}: {e}")
-            return []
-
-
+        # Execute the command on the router
+        response = self.execute("/tool/user-manager/profile/limitation/set", params)
+        return response
 
     def list_limitations(self):
         """

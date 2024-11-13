@@ -8,7 +8,22 @@
                     <button name="create_limitation"
                             type="object"
                             invisible="hotspot_limitation_id != False"
+                            confirm="Are you sure you want to CREATE this Limitation?"
                             string="Create Profile Limitation"
+                            class="btn-primary"/>
+
+                    <button name="update_limitation"
+                            type="object"
+                            invisible="hotspot_limitation_id == False"
+                            confirm="Are you sure you want to UPDATE this Limitaion?"
+                            string="Update Profile Limitation"
+                            class="btn-primary"/>
+
+                    <button name="delete_limitation"
+                            type="object"
+                            invisible="hotspot_limitation_id == False"
+                            confirm="Are you sure you want to DELETE this Profile?"
+                            string="Delete Profile Limitation"
                             class="btn-primary"/>
                 </header>
                 <sheet>
@@ -16,6 +31,8 @@
                         <field name="name"/>
                         <field name="rate_limit_rx"/>
                         <field name="rate_limit_tx"/>
+                        <field name="rate_limit_min_rx"/>
+                        <field name="rate_limit_min_tx"/>
                         <field name="uptime_limit"/>
                         <field name="transfer_limit"/>
                         <field name="partner_id"/>
@@ -34,6 +51,8 @@
                 <field name="name"/>
                 <field name="rate_limit_rx"/>
                 <field name="rate_limit_tx"/>
+                <field name="rate_limit_min_rx"/>
+                <field name="rate_limit_min_tx"/>
                 <field name="uptime_limit"/>
                 <field name="transfer_limit"/>
                 <field name="partner_id"/>
