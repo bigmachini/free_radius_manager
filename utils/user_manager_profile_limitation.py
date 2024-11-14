@@ -63,6 +63,20 @@ class UserManagerProfileLimitation(MikroTik):
                 return profile
         return None
 
+    def get_profile_limitation_by_id(self, profile_limitation_id):
+        """
+        Get the user ID for a specific username.
+
+        :param profile_limitation_id: ID of profile limitation.
+
+        :return: None or the profile_limitation object.
+        """
+        profiles = self.list_profile_limitation()
+        for profile in profiles:
+            if profile.get(".id") == profile_limitation_id:
+                return profile
+        return None
+
     def update_profile_limitation(self, profile_limitation_id, from_time="0s", till_time="23h59m59s", weekdays=None):
         """
         Update an existing profile_limitation

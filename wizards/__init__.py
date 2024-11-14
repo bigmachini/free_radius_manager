@@ -1,0 +1,1 @@
+from . import assign_user_profile_wizard
