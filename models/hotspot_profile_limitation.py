@@ -37,7 +37,7 @@ class HotspotProfileLimitation(models.Model):
     friday = fields.Boolean(string='Friday')
     saturday = fields.Boolean(string='Saturday')
     sunday = fields.Boolean(string='Sunday')
-    hotspot_profile_limitation_id = fields.Char(string='Hotspot Package ID', readonly=True)
+    hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
 
     def get_active_weekdays(self):
         """
@@ -119,7 +119,7 @@ class HotspotProfileLimitation(models.Model):
                 raise ValidationError("profile_limitation does not exist.")
 
             response = router.update_profile_limitation(
-                id=self.hotspot_profile_limitation_id,
+                profile_limitation_id=self.hotspot_profile_limitation_id,
                 from_time=float_time_to_str(self.from_time),
                 till_time=float_time_to_str(self.till_time),
                 weekdays=self.get_active_weekdays()
