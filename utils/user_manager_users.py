@@ -68,7 +68,7 @@ class UserManager(MikroTik):
                 }
         return None
 
-    def update_user(self, user_id, username, password, customer, shared_users=None):
+    def update_user(self, user_id, username, password, customer, disabled=False, shared_users=None):
         """
         Update a new User
         .
@@ -77,6 +77,7 @@ class UserManager(MikroTik):
         :param password: Password for the new user.
         :param customer: customer of the user (default: "admin").
         :param shared_users: Number of shared users (default: None).
+        :param disabled: Disable the user (default: False).
         :return: The RouterOS response.
         """
 
@@ -85,6 +86,7 @@ class UserManager(MikroTik):
             "username": username,
             "password": password,
             "customer": customer,
+            "disabled": "yes" if disabled else "no",
         }
 
         if shared_users:
@@ -118,7 +120,7 @@ class UserManager(MikroTik):
         :return: The RouterOS response.
         """
         # Find the user ID based on the username
-        user = self.get_user_username(username)
+        user = self.get_user_by_identifier(username)
         if not user:
             raise ValueError(f"User {username} does not exist.")
 
@@ -139,7 +141,7 @@ class UserManager(MikroTik):
         :return: The RouterOS response.
         """
         # Find the user ID based on the username
-        user_id = self.get_user_id(username)
+        user_id = self.get_user_by_identifier(username)
         if not user_id:
             raise ValueError(f"User {username} does not exist.")
 
@@ -155,51 +157,40 @@ class UserManager(MikroTik):
             logging.info(f"Error assigning user {username} to group {group}: {e}")
             return []
 
-    def assign_profile_to_user(self, username, profile_name):
+
+    def assign_profile_to_user(self, user_name, customer, profile_name):
         """
         Assign a User Manager profile to a user.
 
-        :param username: Username of the user.
+        :param customer: Owner of User.
+        :param user_name: User to update profile on.
         :param profile_name: Name of the profile to assign.
         :return: The RouterOS response.
         """
-        user_id = self.get_user_by_identifier(username)
-        if not user_id:
-            raise ValueError(f"User {username} does not exist.")
-
-        profile_id = self.get_profile_id(profile_name)
-        if not profile_id:
-            raise ValueError(f"Profile {profile_name} does not exist.")
+        logging.info(f"UserManager::assign_profile_to_user Assigning profile {profile_name} to user {user_name}")
 
         params = {
-            ".id": user_id,
-            "profile": profile_name
+            "customer": customer,
+            "profile": profile_name,
         }
 
         try:
-            response = self.execute("/tool/user-manager/user/set", params)
+            response = self.execute(f"/tool/user-manager/user/create-and-activate-profile/{user_name}", params)
             return response
         except Exception as e:
-            logging.info(f"Error assigning profile {profile_name} to user {username}: {e}")
+            logging.info(
+                f"UserManager::assign_profile_to_user Error assigning profile {profile_name} to user {user_name} e --> {e}")
             return []
 
-    def activate_user_profile(self, username, profile_name):
+    def activate_user_profile(self, user_id, profile_name):
         """
         Activate a profile assigned to a user.
 
-        :param username: The username of the user.
+        :param user_id: user ID.
         :param profile_name: The profile to activate for the user.
         :return: The RouterOS response.
         """
-        # Get user ID
-        user_id = self.get_user_by_identifier(username)
-        if not user_id:
-            raise ValueError(f"User {username} does not exist.")
-
-        # Get profile ID
-        profile_id = self.get_profile_id(profile_name)
-        if not profile_id:
-            raise ValueError(f"Profile {profile_name} does not exist.")
+        logging.info(f"UserManager::activate_user_profile Activating profile {profile_name} for user {user_id}")
 
         # Activate the profile
         params = {
@@ -211,5 +202,6 @@ class UserManager(MikroTik):
             response = self.execute("/tool/user-manager/user/activate", params)
             return response
         except Exception as e:
-            logging.info(f"Error activating profile {profile_name} for user {username}: {e}")
+            logging.info(
+                f"UserManager::activate_user_profile Error activating profile {profile_name} for user {user_id} e --> {e}")
             return []

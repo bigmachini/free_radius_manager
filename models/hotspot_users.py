@@ -21,20 +21,27 @@ class HotspotUser(models.Model):
     partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
                                  required=True)
     hotspot_user_id = fields.Char(string="Hotspot User ID", readonly=True)
+    disabled = fields.Boolean(string="Disabled", default=False)
+    user_profile_limitation_ids = fields.One2many('radius_manager.user_profile_limitation', 'hotspot_user_id',
+                                                  string="User Profile Limitations")
+    hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
+                                               string="User Sessions")
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             code = vals["phone"][-6:]
             partner = self.env['res.partner'].browse(vals["partner_id"])
-            vals["username"] = f'{partner.unique_code.upper()}_{code}'
-            vals["password"] = code
+            vals["username"] = f'{partner.unique_code.lower()}_{code}'
+            vals["password"] = vals["phone"][-4:]
         return super(HotspotUser, self).create(vals_list)
 
     def create_hotspot_user(self):
         """
         Create a new User Manager user.
         """
+        logging.info(f"HotspotUser::create_hotspot_user")
+
         if self.partner_id.kredoh_username is None:
             raise ValidationError("Kredoh Username is required to create a user.")
 
@@ -43,7 +50,7 @@ class HotspotUser(models.Model):
             response = router.create_user(username=self.username, password=self.password,
                                           customer=self.partner_id.kredoh_username)
             logging.info(f"User '{response}' created successfully!")
-            user = router.get_user_by_identifier(username=self.username)
+            user = router.get_user_by_identifier(self.username)
             logging.info(f"User: {user}")
             if user:
                 self.hotspot_user_id = user.get(".id")
@@ -53,4 +60,58 @@ class HotspotUser(models.Model):
             print(f"Failed to create user: {e}")
         finally:
             router.disconnect()
-            logging.info("Disconnected from MikroTik.")
+            logging.info("HotspotUser::create_hotspot_user Disconnected from MikroTik.")
+
+    def disable_hotspot_user(self):
+        logging.info(f"HotspotUser::disable_user")
+
+        try:
+            router.connect()
+            response = router.update_user(user_id=self.hotspot_user_id, username=self.username, password=self.password,
+                                          disabled=True,
+                                          customer=self.partner_id.kredoh_username)
+            logging.info(f"HotspotUser::disable_userUser '{response}' disabled successfully!")
+            self.disabled = True
+
+        except Exception as e:
+            print(f"HotspotUser::disable_userUser Failed to disable user  e --> {e}")
+        finally:
+            router.disconnect()
+            logging.info("HotspotUser::disable_userUser Disconnected from MikroTik.")
+
+    def enable_hotspot_user(self):
+        logging.info(f"HotspotUser::enable_hotspot_user")
+
+        try:
+            router.connect()
+            response = router.update_user(user_id=self.hotspot_user_id, username=self.username, password=self.password,
+                                          disabled=False,
+                                          customer=self.partner_id.kredoh_username)
+            logging.info(f"HotspotUser::enable_hotspot_user '{response}' disabled successfully!")
+            self.disabled = False
+
+        except Exception as e:
+            print(f"HotspotUser::disable_userUser Failed to disable user  e --> {e}")
+        finally:
+            router.disconnect()
+            logging.info("HotspotUser::disable_userUser Disconnected from MikroTik.")
+
+    def assign_profile_user(self, profile_name):
+        self.ensure_one()
+        logging.info(f"HotspotUser::assign_profile_user")
+
+        try:
+            router.connect()
+            user = router.get_user_by_identifier(self.username)
+
+            user_id = int(self.hotspot_user_id.replace("*", "")) - 1
+            response = router.assign_profile_to_user(customer=self.partner_id.kredoh_username,
+                                                     user_id=user_id,
+                                                     profile_name=profile_name)
+            logging.info(f"HotspotUser::assign_profile_user '{response}' assigned successfully!")
+
+        except Exception as e:
+            print(f"HotspotUser::assign_profile_user Failed to assign user  e --> {e}")
+        finally:
+            router.disconnect()
+            logging.info("HotspotUser::assign_profile_user Disconnected from MikroTik.")
