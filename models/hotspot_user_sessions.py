@@ -61,11 +61,15 @@ class HotspotUserSession(models.Model):
     _sql_constraints = [('unique_session_id_uniq', 'unique(unique_session_id)', 'Session ID must be unique')]
 
     @staticmethod
-    def get_unique_session_id(nas_ip, acct_session_id, calling_station_id):
+    def get_unique_session_id(host_ip, acct_session_id, calling_station_id):
         """
         Get a unique session ID.
         """
-        session_data = f"{nas_ip}-{acct_session_id}-{calling_station_id}"
+        if not acct_session_id:
+            session_data = f"{host_ip}-{calling_station_id}"
+        else:
+            session_data = f"{host_ip}-{acct_session_id}-{calling_station_id}"
+
         unique_session_id = hashlib.sha256(session_data.encode()).hexdigest()
         return unique_session_id
 
@@ -96,25 +100,25 @@ class HotspotUserSession(models.Model):
                 transfer = download + upload
                 val = {
                     'unique_session_id': unique_session_id,
-                    'customer': session['customer'],
-                    'hotspot_user': session['user'],
-                    'calling_station_id': session['calling-station-id'],
-                    'acct_session_id': session['acct-session-id'],
-                    'user_ip': session['user-ip'],
-                    'host_ip': session['host-ip'],
-                    'status': session['status'],
-                    'start_time': convert_to_odoo_timestamp(session['from-time']),
-                    'end_time': convert_to_odoo_timestamp(session['till-time']),
-                    'uptime': session['uptime'],
-                    'download': session['download'],
+                    'customer': session.get('customer', None),
+                    'hotspot_user': session.get('user', None),
+                    'calling_station_id': session.get('calling-station-id', None),
+                    'acct_session_id': session.get('acct-session-id', None),
+                    'user_ip': session.get('user-ip', None),
+                    'host_ip': session.get('host-ip', None),
+                    'status': session.get('status', None),
+                    'start_time': convert_to_odoo_timestamp(session.get('from-time', None)),
+                    'end_time': convert_to_odoo_timestamp(session.get('till-time', None)),
+                    'uptime': session.get('uptime', None),
+                    'download': session.get('download', None),
                     'download_amount': bytes_to_human_readable(download),
-                    'upload': session['upload'],
+                    'upload': session.get('upload', None),
                     'upload_amount': bytes_to_human_readable(upload),
                     'transfer': transfer,
                     'transfer_amount': bytes_to_human_readable(transfer)
                 }
                 if session.get('terminate-cause', None):
-                    val['terminate_cause'] = session["terminate-cause"]
+                    val['terminate_cause'] = session.get("terminate-cause", None),
 
                 partner = self.env['res.partner'].search([('kredoh_username', '=', session['customer'])], limit=1)
                 if not partner:

@@ -42,8 +42,6 @@
             <list string="User Sessions" create="false" edit="false">
                 <field name="calling_station_id"/>
                 <field name="user_ip"/>
-                <field name="status"/>
-                <field name="terminate_cause"/>
                 <field name="uptime"/>
                 <field name="upload_amount"/>
                 <field name="download_amount"/>

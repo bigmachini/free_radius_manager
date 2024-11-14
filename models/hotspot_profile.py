@@ -13,9 +13,9 @@ class HotspotProfile(models.Model):
     _description = 'Hotspot Profile'
 
     name = fields.Char(string='Profile Name', required=True)
-    name_for_name = fields.Char(string='Display Name', required=True,
+    name_for_user = fields.Char(string='User Display Name', required=True,
                                 help='The name to display on the hotspot login page.')
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+    partner_id = fields.Many2one('res.partner', string='Partner',
                                  domain=[('is_kredoh_partner', '=', True)])
     validity = fields.Char(string='Validity', required=True,
                            help='The validity of the profile in seconds(s),minutes(m),hours(h),days(d) or unlimited')

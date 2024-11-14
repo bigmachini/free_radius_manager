@@ -30,12 +30,12 @@
                     <group>
                         <group string="profile_limitation Details" name="profile_limitation_details">
                             <field name="name"/>
-                            <field name="hotspot_profile_id" options="{'no_create': True}"/>
-                            <field name="hotspot_profile_limitation_id" options="{'no_create': True}"/>
+                            <field name="hotspot_profile_id" options="{'no_create': True}"  required="True"/>
+                            <field name="hotspot_profile_limitation_id" options="{'no_create': True}"  required="True"/>
                         </group>
                         <group string="Time Active" name="time_active">
-                            <field name="from_time" widget="float_time"/>
-                            <field name="till_time" widget="float_time"/>
+                            <field name="from_time" widget="float_time" required="True"/>
+                            <field name="till_time" widget="float_time" required="True"/>
                         </group>
                         <group string="Days of Week Active" name="week_days">
                             <field name="monday"/>

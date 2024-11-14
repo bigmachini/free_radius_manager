@@ -29,7 +29,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="name_for_name"/>
+                        <field name="name_for_user"/>
                         <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="price"/>
@@ -46,7 +46,7 @@
         <field name="arch" type="xml">
             <list string="Hotspot Profiles">
                 <field name="name"/>
-                <field name="display_name"/>
+                <field name="name_for_user"/>
                 <field name="validity"/>
                 <field name="price"/>
                 <field name="partner_id"/>

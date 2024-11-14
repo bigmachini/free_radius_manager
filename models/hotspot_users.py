@@ -43,7 +43,7 @@ class HotspotUser(models.Model):
             response = router.create_user(username=self.username, password=self.password,
                                           customer=self.partner_id.kredoh_username)
             logging.info(f"User '{response}' created successfully!")
-            user = router.get_user_username(username=self.username)
+            user = router.get_user_by_identifier(username=self.username)
             logging.info(f"User: {user}")
             if user:
                 self.hotspot_user_id = user.get(".id")

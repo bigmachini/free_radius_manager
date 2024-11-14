@@ -23,12 +23,12 @@ class HotspotProfileLimitation(models.Model):
     _description = 'Hotspot Profile Limitation'
 
     name = fields.Char(string='Package Name', required=True)
-    hotspot_profile_id = fields.Many2one('radius_manager.hotspot_profile', string='Hotspot Profile', required=True)
+    hotspot_profile_id = fields.Many2one('radius_manager.hotspot_profile', string='Hotspot Profile')
     hotspot_limitation_id = fields.Many2one('radius_manager.hotspot_limitation',
-                                            string='Hotspot Profile Limitation', required=True)
+                                            string='Hotspot Profile Limitation')
 
-    from_time = fields.Float(string="From Time", required=True)
-    till_time = fields.Float(string="Till Time", required=True)
+    from_time = fields.Float(string="From Time")
+    till_time = fields.Float(string="Till Time")
 
     monday = fields.Boolean(string='Monday')
     tuesday = fields.Boolean(string='Tuesday')

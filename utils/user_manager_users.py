@@ -49,35 +49,16 @@ class UserManager(MikroTik):
             logging.info(f"Error creating user {username}: {e}")
             return []
 
-    def get_user_username(self, username):
+    def get_user_by_identifier(self, identifier):
         """
         Get the user ID for a specific username.
 
-        :param username: The username to search for.
-        :return: The user ID, or None if the user does not exist.
+        :param identifier: Value used to search for User.
+        :return: The RouterOS response.
         """
         users = self.list_users()
         for user in users:
-            if user.get("username") == username:
-                return {
-                    ".id": user.get(".id"),
-                    "username": user.get("username"),
-                    "password": user.get("password"),
-                    "customer": user.get("customer"),
-                    "disabled": user.get("disabled"),
-                }
-        return None
-
-    def get_user_id(self, user_id):
-        """
-        Get the user ID for a specific username.
-
-        :param username: The username to search for.
-        :return: The user ID, or None if the user does not exist.
-        """
-        users = self.list_users()
-        for user in users:
-            if user.get(".id") == user_id:
+            if user.get(".id") == identifier or user.get("username") == identifier:
                 return {
                     ".id": user.get(".id"),
                     "username": user.get("username"),
@@ -89,20 +70,15 @@ class UserManager(MikroTik):
 
     def update_user(self, user_id, username, password, customer, shared_users=None):
         """
-        Create a new user in User Manager.
-
+        Update a new User
+        .
+        :param user_id: ID for user.
         :param username: Username for the new user.
         :param password: Password for the new user.
         :param customer: customer of the user (default: "admin").
         :param shared_users: Number of shared users (default: None).
         :return: The RouterOS response.
         """
-        if not username:
-            raise ValueError("Username is required to create a user.")
-        if not password:
-            raise ValueError("Password is required to create a user.")
-        if not customer:
-            raise ValueError("Customer is required to create a user.")
 
         params = {
             ".id": user_id,
@@ -110,6 +86,7 @@ class UserManager(MikroTik):
             "password": password,
             "customer": customer,
         }
+
         if shared_users:
             params["shared-users"] = shared_users
 
@@ -186,7 +163,7 @@ class UserManager(MikroTik):
         :param profile_name: Name of the profile to assign.
         :return: The RouterOS response.
         """
-        user_id = self.get_user_id(username)
+        user_id = self.get_user_by_identifier(username)
         if not user_id:
             raise ValueError(f"User {username} does not exist.")
 
@@ -215,7 +192,7 @@ class UserManager(MikroTik):
         :return: The RouterOS response.
         """
         # Get user ID
-        user_id = self.get_user_id(username)
+        user_id = self.get_user_by_identifier(username)
         if not user_id:
             raise ValueError(f"User {username} does not exist.")
 
