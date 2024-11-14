@@ -7,21 +7,21 @@
                 <header>
                     <button name="create_hotspot_profile_limitation"
                             type="object"
-                            string="Create profile_limitation"
+                            string="Create Profile Limitation"
                             class="btn-primary"
                             confirm="Are you sure you want to CREATE this profile_limitation?"
                             invisible="hotspot_profile_limitation_id != False"/>
 
                     <button name="update_hotspot_profile_limitation"
                             type="object"
-                            string="Update profile_limitation"
+                            string="Update Profile Limitation"
                             class="btn-primary"
                             confirm="Are you sure you want to UPDATE this profile_limitation?"
                             invisible="hotspot_profile_limitation_id == False"/>
 
-                    <button name="update_hotspot_profile_limitation"
+                    <button name="delete_hotspot_profile_limitation"
                             type="object"
-                            string="Update profile_limitation"
+                            string="Delete Profile Limitation"
                             class="btn-primary"
                             confirm="Are you sure you want to DELETE this profile_limitation?"
                             invisible="hotspot_profile_limitation_id == False"/>
@@ -30,8 +30,9 @@
                     <group>
                         <group string="profile_limitation Details" name="profile_limitation_details">
                             <field name="name"/>
-                            <field name="hotspot_profile_id" options="{'no_create': True}"  required="True"/>
-                            <field name="hotspot_profile_limitation_id" options="{'no_create': True}"  required="True"/>
+                            <field name="hotspot_profile_id" options="{'no_create': True}" required="True"/>
+                            <field name="hotspot_limitation_id" options="{'no_create': True}" required="True"/>
+                            <field name="hotspot_profile_limitation_id"/>
                         </group>
                         <group string="Time Active" name="time_active">
                             <field name="from_time" widget="float_time" required="True"/>
@@ -56,7 +57,7 @@
         <field name="name">Profile Limitation List</field>
         <field name="model">radius_manager.hotspot_profile_limitation</field>
         <field name="arch" type="xml">
-            <list string="Hotspot profile_limitation">
+            <list string="Hotspot profile_limitation" default_order="id desc">
                 <field name="name"/>
                 <field name="hotspot_profile_id"/>
                 <field name="hotspot_profile_limitation_id"/>
@@ -67,7 +68,7 @@
     </record>
 
     <record id="action_hotspot_profile_limitation" model="ir.actions.act_window">
-        <field name="name">Profile Limitation Action</field>
+        <field name="name">Profile Limitation</field>
         <field name="res_model">radius_manager.hotspot_profile_limitation</field>
         <field name="view_mode">list,form</field>
     </record>

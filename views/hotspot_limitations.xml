@@ -47,7 +47,7 @@
         <field name="name">Limitation List</field>
         <field name="model">radius_manager.hotspot_limitation</field>
         <field name="arch" type="xml">
-            <list string="Hotspot Profile Limitations">
+            <list string="Hotspot Profile Limitations" default_order="id desc">
                 <field name="name"/>
                 <field name="rate_limit_rx"/>
                 <field name="rate_limit_tx"/>

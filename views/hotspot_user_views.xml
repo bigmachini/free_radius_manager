@@ -7,20 +7,70 @@
                 <header>
                     <button name="create_hotspot_user"
                             type="object"
+                            confirm="Are you sure you want to CREATE this User?"
                             string="Create Hotspot User"
                             class="btn-primary"
                             invisible="hotspot_user_id != False"/>
+
+                    <button name="disable_hotspot_user"
+                            type="object"
+                            invisible="disabled != False or hotspot_user_id == False"
+                            confirm="Are you sure you want to Disable this User?"
+                            string="Disable User"
+                            class="btn-primary"/>
+
+                    <button name="enable_hotspot_user"
+                            type="object"
+                            invisible="disabled == True or hotspot_user_id == False"
+                            confirm="Are you sure you want to Disable this User?"
+                            string="Enable User"
+                            class="btn-primary"/>
+
+                    <button name="%(action_assign_user_profile_wizard)d"
+                            type="action"
+                            string="Assign Profile"
+                            invisible="disabled == True or hotspot_user_id == False"
+                            class="btn-primary"
+                            context="{'default_hotspot_user_id': id}"/>
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="phone"/>
-                        <field name="username"/>
-                        <field name="password"/>
-                        <field name="partner_id"/>
-                        <field name="hotspot_user_id"/>
+                        <group string="User Details">
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Hotspot Details">
+                            <field name="username"/>
+                            <field name="password"/>
+                            <field name="hotspot_user_id"/>
+                            <field name="disabled" readonly="True"/>
+                        </group>
                     </group>
-
+                    <notebook>
+                        <page string="Profiles" name="user_profiles">
+                            <field name="user_profile_limitation_ids">
+                                <list string="Profiles">
+                                    <field name="hotspot_profile_limitation_id"/>
+                                    <field name="is_activated"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Sessions" name="user_session">
+                            <field name="hotspot_user_session_ids">
+                                <list string="Sessions">
+                                    <field name="calling_station_id"/>
+                                    <field name="user_ip"/>
+                                    <field name="uptime"/>
+                                    <field name="upload_amount"/>
+                                    <field name="download_amount"/>
+                                    <field name="transfer_amount"/>
+                                    <field name="start_time"/>
+                                    <field name="end_time"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -30,11 +80,13 @@
         <field name="name">hotspot.user.list</field>
         <field name="model">radius_manager.hotspot_user</field>
         <field name="arch" type="xml">
-            <list string="Hotspot Users">
+            <list string="Hotspot Users" default_order="id desc">
                 <field name="name"/>
                 <field name="username"/>
+                <field name="password"/>
                 <field name="phone"/>
                 <field name="partner_id"/>
+                <field name="disabled"/>
             </list>
         </field>
     </record>
@@ -48,13 +100,13 @@
     <menuitem id="menu_hotspot_home"
               name="Hotspot Manager"/>
 
-    <menuitem id="menu_hotspot"
-              name="Hotspot"
+    <menuitem id="menu_users"
+              name="Users"
               parent="menu_hotspot_home"
               sequence="1"/>
 
     <menuitem id="menu_hotspot_user"
-              name="Users"
-              parent="menu_hotspot"
+              name="Users List"
+              parent="menu_users"
               action="action_hotspot_user"/>
 </odoo>

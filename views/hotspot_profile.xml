@@ -44,7 +44,7 @@
         <field name="name">hotspot.profile.list</field>
         <field name="model">radius_manager.hotspot_profile</field>
         <field name="arch" type="xml">
-            <list string="Hotspot Profiles">
+            <list string="Hotspot Profiles" default_order="id desc">
                 <field name="name"/>
                 <field name="name_for_user"/>
                 <field name="validity"/>

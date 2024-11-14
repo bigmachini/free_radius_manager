@@ -39,7 +39,8 @@
         <field name="name">hotspot.user.session.list</field>
         <field name="model">radius_manager.hotspot_user_session</field>
         <field name="arch" type="xml">
-            <list string="User Sessions" create="false" edit="false">
+            <list string="User Sessions" create="false" edit="false" default_order="start_time desc">
+                <field name="hotspot_user"/>
                 <field name="calling_station_id"/>
                 <field name="user_ip"/>
                 <field name="uptime"/>
@@ -60,6 +61,6 @@
 
     <menuitem id="menu_hotspot_user_session"
               name="User Sessions"
-              parent="menu_hotspot"
+              parent="menu_users"
               action="action_hotspot_user_session"/>
 </odoo>

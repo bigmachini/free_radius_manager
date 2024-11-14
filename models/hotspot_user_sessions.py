@@ -61,14 +61,14 @@ class HotspotUserSession(models.Model):
     _sql_constraints = [('unique_session_id_uniq', 'unique(unique_session_id)', 'Session ID must be unique')]
 
     @staticmethod
-    def get_unique_session_id(host_ip, acct_session_id, calling_station_id):
+    def get_unique_session_id(nas_port, acct_session_id, calling_station_id):
         """
         Get a unique session ID.
         """
         if not acct_session_id:
-            session_data = f"{host_ip}-{calling_station_id}"
+            session_data = f"{nas_port}-{calling_station_id}"
         else:
-            session_data = f"{host_ip}-{acct_session_id}-{calling_station_id}"
+            session_data = f"{nas_port}-{acct_session_id}-{calling_station_id}"
 
         unique_session_id = hashlib.sha256(session_data.encode()).hexdigest()
         return unique_session_id
@@ -85,7 +85,7 @@ class HotspotUserSession(models.Model):
             for session in sessions:
                 del session['.id']
 
-                unique_session_id = HotspotUserSession.get_unique_session_id(session.get('host-ip', None),
+                unique_session_id = HotspotUserSession.get_unique_session_id(session.get('nas-port', None),
                                                                              session.get('acct-session-id', None),
                                                                              session.get('calling-station-id', None))
 
