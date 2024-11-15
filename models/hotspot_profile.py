@@ -44,8 +44,6 @@ class HotspotProfile(models.Model):
             logging.info(f"Profile: {profile}")
             if profile:
                 self.hotspot_profile_id = profile.get(".id")
-        except Exception as e:
-            logging.error(f"HotspotProfile::update_hotspot_profile Error creating hotspot profile e --> {e}")
         finally:
             router.disconnect()
 
@@ -64,8 +62,6 @@ class HotspotProfile(models.Model):
                 raise ValidationError(f"Failed to update profile: {error_msg}")
 
             logging.info(f"HotspotProfile::update_hotspot_profile response {response}")
-        except Exception as e:
-            logging.error(f"HotspotProfile::update_hotspot_profile  Error creating hotspot profile  e --> {e}")
         finally:
             router.disconnect()
 
@@ -83,7 +79,5 @@ class HotspotProfile(models.Model):
 
             self.hotspot_profile_id = None
             logging.info(f"HotspotProfile::delete_profile  response {response}!")
-        except Exception as e:
-            logging.error(f"HotspotProfile::delete_profile Exception e -->{e}")
         finally:
             router.disconnect()
