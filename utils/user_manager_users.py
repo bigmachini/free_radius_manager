@@ -38,6 +38,7 @@ class UserManager(MikroTik):
             "username": username,
             "password": password,
             "customer": customer,
+            "disabled": "no",
         }
         if shared_users:
             params["shared-users"] = shared_users
@@ -57,6 +58,7 @@ class UserManager(MikroTik):
         :return: The RouterOS response.
         """
         users = self.list_users()
+        number = 0
         for user in users:
             if user.get(".id") == identifier or user.get("username") == identifier:
                 return {
@@ -65,7 +67,9 @@ class UserManager(MikroTik):
                     "password": user.get("password"),
                     "customer": user.get("customer"),
                     "disabled": user.get("disabled"),
+                    "number": number
                 }
+            number += 1
         return None
 
     def update_user(self, user_id, username, password, customer, disabled=False, shared_users=None):
@@ -157,30 +161,34 @@ class UserManager(MikroTik):
             logging.info(f"Error assigning user {username} to group {group}: {e}")
             return []
 
-
-    def assign_profile_to_user(self, user_name, customer, profile_name):
+    def assign_profile_to_user(self, number, customer, profile_name):
         """
         Assign a User Manager profile to a user.
 
         :param customer: Owner of User.
-        :param user_name: User to update profile on.
+        :param number: User to update profile on.
         :param profile_name: Name of the profile to assign.
         :return: The RouterOS response.
         """
-        logging.info(f"UserManager::assign_profile_to_user Assigning profile {profile_name} to user {user_name}")
+        logging.info(f"UserManager::assign_profile_to_user Assigning profile {profile_name} to user {number}")
 
         params = {
+            "numbers": number,
             "customer": customer,
             "profile": profile_name,
         }
 
         try:
-            response = self.execute(f"/tool/user-manager/user/create-and-activate-profile/{user_name}", params)
-            return response
+            response = self.execute(f"/tool/user-manager/user/create-and-activate-profile", params)
+            if response and response[0]['!status'] == '!done':
+                logging.info(f"UserManager::assign_profile_to_user response --> {response}")
+                return response
+            else:
+                return None
         except Exception as e:
             logging.info(
-                f"UserManager::assign_profile_to_user Error assigning profile {profile_name} to user {user_name} e --> {e}")
-            return []
+                f"UserManager::assign_profile_to_user Error assigning profile {profile_name} to user {number} e --> {e}")
+            return None
 
     def activate_user_profile(self, user_id, profile_name):
         """
