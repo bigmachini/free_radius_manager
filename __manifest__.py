@@ -15,6 +15,7 @@
         'views/hotspot_user_sessions.xml',
         'views/hotspot_profile_limitation.xml',
         'views/user_profile_limitation.xml',
+        'views/hotspot_router.xml',
         'data/cron_jobs.xml',
     ],
     'installable': True,
