@@ -1,4 +1,3 @@
-
 import hashlib
 import logging
 import socket
@@ -129,4 +128,9 @@ class MikroTik:
     def execute(self, command, params=None, is_list=False):
         """Execute a command on the router."""
         self.write(command, params)
-        return self.read(is_list)
+        response = self.read(is_list)
+        if is_list:
+            logging.info(f"MikroTik::execute  is_list == True res -->{response}")
+        else:
+            logging.info(f"MikroTik::execute  is_list == False res -->{response}")
+        return response
