@@ -39,6 +39,8 @@ class HotspotProfileLimitation(models.Model):
     sunday = fields.Boolean(string='Sunday')
     hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
 
+
+
     def get_active_weekdays(self):
         """
         Generate a comma-separated string of active weekdays based on boolean fields.
@@ -113,8 +115,13 @@ class HotspotProfileLimitation(models.Model):
         """
         try:
             router.connect()
-            profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
-                                                                       self.hotspot_limitation_id.name)
+            if self.hotspot_profile_limitation_id:
+                profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                           self.hotspot_limitation_id.name,
+                                                                           self.hotspot_profile_limitation_id)
+            else:
+                profile_limitation = router.get_profile_limitation_by_name(self.hotspot_profile_id.name,
+                                                                           self.hotspot_limitation_id.name)
             if not profile_limitation:
                 raise ValidationError("profile_limitation does not exist.")
 
