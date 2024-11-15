@@ -28,15 +28,19 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="rate_limit_rx"/>
-                        <field name="rate_limit_tx"/>
-                        <field name="rate_limit_min_rx"/>
-                        <field name="rate_limit_min_tx"/>
-                        <field name="uptime_limit"/>
-                        <field name="transfer_limit"/>
-                        <field name="partner_id"/>
-                        <field name="hotspot_limitation_id"/>
+                        <group string="Details" name="limitation">
+                            <field name="name"/>
+                            <field name="uptime_limit"/>
+                            <field name="transfer_limit"/>
+                            <field name="partner_id"/>
+                            <field name="hotspot_limitation_id"/>
+                        </group>
+                        <group string="Transfer Rates" name="limitation">
+                            <field name="rate_limit_rx"/>
+                            <field name="rate_limit_tx"/>
+                            <field name="rate_limit_min_rx"/>
+                            <field name="rate_limit_min_tx"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
