@@ -48,7 +48,7 @@ class UserManagerProfileLimitation(MikroTik):
             logging.error(f"UserManagerProfileLimitation::list_profile_limitation Exception e -> {e}")
             return []
 
-    def get_profile_limitation_by_name(self, profile_name, limitation_name):
+    def get_profile_limitation_by_name(self, profile_name, limitation_name, profile_limitation_id=None):
         """
         Get the user ID for a specific username.
 
@@ -59,7 +59,8 @@ class UserManagerProfileLimitation(MikroTik):
         """
         profiles = self.list_profile_limitation()
         for profile in profiles:
-            if profile.get("profile") == profile_name and profile.get("limitation") == limitation_name:
+            if (profile.get("profile") == profile_name and profile.get("limitation") == limitation_name) or (
+                     profile.get(".id") == profile_limitation_id):
                 return profile
         return None
 
