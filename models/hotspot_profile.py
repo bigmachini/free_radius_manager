@@ -35,8 +35,9 @@ class HotspotProfile(models.Model):
             response = router.add_profile(name=self.name, owner=self.partner_id.kredoh_username,
                                           name_for_users=self.display_name, price=self.price,
                                           validity=self.validity)
-            if len(response) == 0:
-                raise ValidationError("Failed to create profile")
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to create profile: {error_msg}")
 
             logging.info(f"Profile '{response}' created successfully!")
             profile = router.get_profile_by_name(self.name)
@@ -58,8 +59,9 @@ class HotspotProfile(models.Model):
                                              owner=self.partner_id.kredoh_username,
                                              name_for_users=self.display_name, price=self.price,
                                              validity=self.validity)
-            if len(response) == 0:
-                raise ValidationError("Failed to update profile")
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to update profile: {error_msg}")
 
             logging.info(f"HotspotProfile::update_hotspot_profile response {response}")
         except Exception as e:
@@ -75,8 +77,9 @@ class HotspotProfile(models.Model):
             router.connect()
             response = router.delete_profile(self.hotspot_profile_id)
 
-            if len(response) == 0:
-                raise ValidationError("Failed to delete profile")
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to delete profile: {error_msg}")
 
             self.hotspot_profile_id = None
             logging.info(f"HotspotProfile::delete_profile  response {response}!")
