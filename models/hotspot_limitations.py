@@ -13,7 +13,7 @@ class HotspotLimitation(models.Model):
     _description = 'Profile Limitation'
 
     name = fields.Char(string='Limitation Name', required=True, help='The name of the profile limitation')
-    rate_limit_rx = fields.Char(string='Rate Limit Download', required=True, help="""
+    rate_limit_rx = fields.Char(string='Download Speed', required=True, help="""
     Sets the bandwidth limitation for the profile.
     
 		Allowed Values:
@@ -26,7 +26,7 @@ class HotspotLimitation(models.Model):
 		    G for gigabits per second (e.g., 1G).
 		    
 		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
-    rate_limit_tx = fields.Char(string='Rate Limit Upload', required=True, help="""
+    rate_limit_tx = fields.Char(string='Upload Speed', required=True, help="""
         Sets the bandwidth limitation for the profile.
 
     		Allowed Values:
@@ -39,7 +39,7 @@ class HotspotLimitation(models.Model):
     		    G for gigabits per second (e.g., 1G).
 
     		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
-    rate_limit_min_rx = fields.Char(string='Rate Limit Min Download', required=True, help="""
+    rate_limit_min_rx = fields.Char(string='Min Download Speed', required=True, help="""
         Sets the bandwidth limitation for the profile.
 
     		Allowed Values:
@@ -52,7 +52,7 @@ class HotspotLimitation(models.Model):
     		    G for gigabits per second (e.g., 1G).
 
     		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
-    rate_limit_min_tx = fields.Char(string='Rate Limit Min Upload', required=True, help="""
+    rate_limit_min_tx = fields.Char(string='Min Upload Speed', required=True, help="""
             Sets the bandwidth limitation for the profile.
 
         		Allowed Values:

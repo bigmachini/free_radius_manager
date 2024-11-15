@@ -103,15 +103,14 @@ class HotspotUser(models.Model):
         try:
             router.connect()
             user = router.get_user_by_identifier(self.username)
+            if user:
+                response = router.assign_profile_to_user(customer=self.partner_id.kredoh_username,
+                                                         number=user.get("number"),
+                                                         profile_name=profile_name)
+                if not response:
+                    raise ValidationError("Failed to assign user to profile.")
+                logging.info(f"HotspotUser::assign_profile_user '{response}' assigned successfully!")
 
-            user_id = int(self.hotspot_user_id.replace("*", "")) - 1
-            response = router.assign_profile_to_user(customer=self.partner_id.kredoh_username,
-                                                     user_id=user_id,
-                                                     profile_name=profile_name)
-            logging.info(f"HotspotUser::assign_profile_user '{response}' assigned successfully!")
-
-        except Exception as e:
-            print(f"HotspotUser::assign_profile_user Failed to assign user  e --> {e}")
         finally:
             router.disconnect()
             logging.info("HotspotUser::assign_profile_user Disconnected from MikroTik.")
