@@ -9,21 +9,21 @@
                             type="object"
                             invisible="hotspot_limitation_id != False"
                             confirm="Are you sure you want to CREATE this Limitation?"
-                            string="Create Profile Limitation"
+                            string="Create Limitation"
                             class="btn-primary"/>
 
                     <button name="update_limitation"
                             type="object"
                             invisible="hotspot_limitation_id == False"
                             confirm="Are you sure you want to UPDATE this Limitaion?"
-                            string="Update Profile Limitation"
+                            string="Update Limitation"
                             class="btn-primary"/>
 
                     <button name="delete_limitation"
                             type="object"
                             invisible="hotspot_limitation_id == False"
                             confirm="Are you sure you want to DELETE this Profile?"
-                            string="Delete Profile Limitation"
+                            string="Delete Limitation"
                             class="btn-primary"/>
                 </header>
                 <sheet>
