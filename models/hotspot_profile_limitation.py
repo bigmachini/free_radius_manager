@@ -30,15 +30,15 @@ class HotspotProfileLimitation(models.Model):
                                             string='Hotspot Profile Limitation')
 
     from_time = fields.Float(string="From Time")
-    till_time = fields.Float(string="Till Time")
+    till_time = fields.Float(string="Till Time", default=23.99)
 
-    monday = fields.Boolean(string='Monday')
-    tuesday = fields.Boolean(string='Tuesday')
-    wednesday = fields.Boolean(string='Wednesday')
-    thursday = fields.Boolean(string='Thursday')
-    friday = fields.Boolean(string='Friday')
-    saturday = fields.Boolean(string='Saturday')
-    sunday = fields.Boolean(string='Sunday')
+    monday = fields.Boolean(string='Monday', default=True)
+    tuesday = fields.Boolean(string='Tuesday', default=True)
+    wednesday = fields.Boolean(string='Wednesday', default=True)
+    thursday = fields.Boolean(string='Thursday', default=True)
+    friday = fields.Boolean(string='Friday', default=True)
+    saturday = fields.Boolean(string='Saturday', default=True)
+    sunday = fields.Boolean(string='Sunday', default=True)
     hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
 
     def get_active_weekdays(self):
@@ -92,6 +92,9 @@ class HotspotProfileLimitation(models.Model):
                     from_time=float_time_to_str(self.from_time), till_time=float_time_to_str(self.till_time),
                     weekdays=self.get_active_weekdays()
                 )
+                if len(response) == 2:
+                    error_msg = response[0]['']
+                    raise ValidationError(f"Failed to CREATE Profile Limitation: {error_msg}")
 
                 logging.info(f"Profile '{response}' created successfully!")
 
@@ -104,8 +107,7 @@ class HotspotProfileLimitation(models.Model):
             else:
                 raise ValidationError(
                     f"HotspotProfileLimitation::create_hotspot_profile_limitation profile_limitation not created")
-        except Exception as e:
-            logging.error(f"HotspotProfileLimitation::create_hotspot_profile_limitation Exception e -->{e}")
+
         finally:
             router.disconnect()
 
@@ -131,11 +133,13 @@ class HotspotProfileLimitation(models.Model):
                 till_time=float_time_to_str(self.till_time),
                 weekdays=self.get_active_weekdays()
             )
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to UPDATE Profile Limitation: {error_msg}")
 
             logging.info(
                 f"HotspotProfileLimitation::update_profile_limitation  Profile '{response}' updated successfully!")
-        except Exception as e:
-            logging.error(f"HotspotProfileLimitation::update_profile_limitation Exception e -->{e}")
+
         finally:
             router.disconnect()
 
@@ -154,9 +158,12 @@ class HotspotProfileLimitation(models.Model):
                 raise ValidationError("profile_limitation does not exist.")
 
             response = router.delete_profile_limitation(self.hotspot_profile_limitation_id)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to DELETE Profile Limitation: {error_msg}")
+
             self.hotspot_profile_limitation_id = None
             logging.info(f"HotspotProfileLimitation::delete_profile_limitation  response {response}!")
-        except Exception as e:
-            logging.error(f"HotspotProfileLimitation::delete_profile_limitation Exception e -->{e}")
+
         finally:
             router.disconnect()
