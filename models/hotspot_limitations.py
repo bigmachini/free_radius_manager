@@ -24,7 +24,9 @@ class HotspotLimitation(models.Model):
 	    	k for kilobits per second (e.g., 512k).
 	        M for megabits per second (e.g., 10M).
 		    G for gigabits per second (e.g., 1G).
-		    
+	
+		Special Value: 0 (no uptime restriction).
+	    
 		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
     rate_limit_tx = fields.Char(string='Upload Speed', required=True, help="""
         Sets the bandwidth limitation for the profile.
@@ -37,6 +39,9 @@ class HotspotLimitation(models.Model):
     	    	k for kilobits per second (e.g., 512k).
     	        M for megabits per second (e.g., 10M).
     		    G for gigabits per second (e.g., 1G).
+    		    
+    		Special Value: 0 (no uptime restriction).
+
 
     		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
     rate_limit_min_rx = fields.Char(string='Min Download Speed', required=True, help="""
@@ -50,6 +55,9 @@ class HotspotLimitation(models.Model):
     	    	k for kilobits per second (e.g., 512k).
     	        M for megabits per second (e.g., 10M).
     		    G for gigabits per second (e.g., 1G).
+    		
+    		Special Value: 0 (no uptime restriction).
+
 
     		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
     rate_limit_min_tx = fields.Char(string='Min Upload Speed', required=True, help="""
@@ -63,6 +71,8 @@ class HotspotLimitation(models.Model):
         	    	k for kilobits per second (e.g., 512k).
         	        M for megabits per second (e.g., 10M).
         		    G for gigabits per second (e.g., 1G).
+        		    
+        		Special Value: 0 (no uptime restriction).
 
         		Example: 10M/5M (10 Mbps download, 5 Mbps upload).""")
     uptime_limit = fields.Char(string='Uptime Limit', required=True, help="""
@@ -75,18 +85,18 @@ class HotspotLimitation(models.Model):
                 m: Minutes.
                 s: Seconds.
                 
-		Special Value: unlimited (no uptime restriction).
+		Special Value: 0 (no uptime restriction).
 		
-		Example: 1h30m (1 hour, 30 minutes).""", default='unlimited')
+		Example: 1h30m (1 hour, 30 minutes).""", default='0')
     transfer_limit = fields.Char(string='Transfer Limit', required=True, help="""
     The total data the user can upload and download.
     
 		Allowed Values:
 		    Format: <size>
 		    Units: B (bytes), k (kilobytes), M (megabytes), G (gigabytes), T (terabytes).
-	        Special Value: unlimited (no data restriction).
+	        Special Value: 0 (no data restriction).
 	        
-		Example: 1G (1 GB).""", default='unlimited')
+		Example: 1G (1 GB).""", default='0')
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
                                  domain=[('is_kredoh_partner', '=', True)])
     hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
