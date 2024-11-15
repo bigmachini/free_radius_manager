@@ -1,0 +1,79 @@
+<odoo>
+    <record id="view_hotspot_router_form" model="ir.ui.view">
+        <field name="name">hotspot.router.form</field>
+        <field name="model">radius_manager.hotspot_router</field>
+        <field name="arch" type="xml">
+            <form string="Hotspot Router">
+                <header>
+                    <button name="update_router_info"
+                            type="object"
+                            string="Get Info"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Connection Details">
+                            <field name="name"/>
+                            <field name="username"/>
+                            <field name="password" password="True"/>
+                            <field name="host"/>
+                            <field name="port"/>
+                        </group>
+                        <group string="Disk Information">
+                            <field name="free_disk_space"/>
+                            <field name="disk_space"/>
+                        </group>
+                        <group string="Router Details">
+                            <field name="model"/>
+                            <field name="firmware_version"/>
+                            <field name="architecture_name"/>
+                            <field name="uptime"/>
+                            <field name="cpu_count"/>
+                            <field name="cpu_load"/>
+                        </group>
+                        <group string="Memory Information">
+                            <field name="free_memory"/>
+                            <field name="memory"/>
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotspot_router_tree" model="ir.ui.view">
+        <field name="name">hotspot.router.tree</field>
+        <field name="model">radius_manager.hotspot_router</field>
+        <field name="arch" type="xml">
+            <list string="Hotspot Router">
+                <field name="name"/>
+                <field name="host"/>
+                <field name="port"/>
+                <field name="model"/>
+                <field name="uptime"/>
+                <field name="cpu_load"/>
+                <field name="free_memory"/>
+                <field name="disk_space"/>
+                <field name="firmware_version"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hotspot_router" model="ir.actions.act_window">
+        <field name="name">Hotspot Routers</field>
+        <field name="res_model">radius_manager.hotspot_router</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <menuitem id="menu_router_top"
+              name="Routers"
+              parent="menu_hotspot_home"/>
+
+
+    <menuitem id="menu_hotspot_router"
+              name="Hotspot Routers"
+              parent="menu_router_top"
+              action="action_hotspot_router"/>
+</odoo>

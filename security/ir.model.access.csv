@@ -6,6 +6,7 @@ access_radius_manager.hotspot_profile,radius_manager.hotspot_profile,model_radiu
 access_radius_manager.hotspot_limitation,radius_manager.hotspot_limitation,model_radius_manager_hotspot_limitation,base.group_user,1,1,1,1
 access_radius_manager.user_profile_limitation,radius_manager.user_profile_limitation,model_radius_manager_user_profile_limitation,base.group_user,1,1,1,1
 access_radius_manager.assign_user_profile_wizard,radius_manager.assign_user_profile_wizard,model_radius_manager_assign_user_profile_wizard,base.group_user,1,1,1,1
+access_radius_manager.hotspot_router,radius_manager.hotspot_router,model_radius_manager_hotspot_router,base.group_user,1,1,1,1
 
 
 
