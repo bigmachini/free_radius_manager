@@ -109,14 +109,16 @@ class HotspotLimitation(models.Model):
                                              uptime_limit=self.uptime_limit.lower(),
                                              transfer_limit=self.transfer_limit,
                                              owner=self.partner_id.kredoh_username)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to creating hotspot limitation: {error_msg}")
+
             logging.info(f"HotspotLimitation::create_limitation response --> {response}")
 
             limitation = router.get_limitation_by_identifier(self.hotspot_limitation_id, self.name)
             logging.info(f"HotspotLimitation::create_limitation limitation --> {limitation}")
             if limitation:
                 self.hotspot_limitation_id = limitation.get(".id")
-        except Exception as e:
-            logging.error(f"HotspotLimitation::create_limitation Error creating hotspot profile limitation e --> {e}")
         finally:
             router.disconnect()
 
@@ -135,9 +137,11 @@ class HotspotLimitation(models.Model):
                                                 uptime_limit=self.uptime_limit,
                                                 transfer_limit=self.transfer_limit,
                                                 owner=self.partner_id.kredoh_username)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to updating hotspot limitation: {error_msg}")
+
             logging.info(f"HotspotLimitation::update_limitation response --> {response}")
-        except Exception as e:
-            logging.error(f"HotspotLimitation::create_limitation Error creating hotspot profile limitation e --> {e}")
         finally:
             router.disconnect()
 
@@ -148,9 +152,11 @@ class HotspotLimitation(models.Model):
         try:
             router.connect()
             response = router.delete_limitation(self.hotspot_limitation_id)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to updating hotspot limitation: {error_msg}")
+
             self.hotspot_limitation_id = None
             logging.info(f"HotspotLimitation::delete_profile  response {response}!")
-        except Exception as e:
-            logging.error(f"HotspotLimitation::delete_profile Exception e -->{e}")
         finally:
             router.disconnect()

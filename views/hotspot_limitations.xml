@@ -15,14 +15,14 @@
                     <button name="update_limitation"
                             type="object"
                             invisible="hotspot_limitation_id == False"
-                            confirm="Are you sure you want to UPDATE this Limitaion?"
+                            confirm="Are you sure you want to UPDATE this Limitation?"
                             string="Update Limitation"
                             class="btn-primary"/>
 
                     <button name="delete_limitation"
                             type="object"
                             invisible="hotspot_limitation_id == False"
-                            confirm="Are you sure you want to DELETE this Profile?"
+                            confirm="Are you sure you want to DELETE this Limitation?"
                             string="Delete Limitation"
                             class="btn-primary"/>
                 </header>
