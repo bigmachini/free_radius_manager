@@ -77,7 +77,7 @@ class HotspotLimitation(models.Model):
                 
 		Special Value: unlimited (no uptime restriction).
 		
-		Example: 1h30m (1 hour, 30 minutes).""")
+		Example: 1h30m (1 hour, 30 minutes).""", default='unlimited')
     transfer_limit = fields.Char(string='Transfer Limit', required=True, help="""
     The total data the user can upload and download.
     
@@ -86,7 +86,7 @@ class HotspotLimitation(models.Model):
 		    Units: B (bytes), k (kilobytes), M (megabytes), G (gigabytes), T (terabytes).
 	        Special Value: unlimited (no data restriction).
 	        
-		Example: 1G (1 GB).""")
+		Example: 1G (1 GB).""", default='unlimited')
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
                                  domain=[('is_kredoh_partner', '=', True)])
     hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
