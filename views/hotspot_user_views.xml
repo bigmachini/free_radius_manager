@@ -14,14 +14,14 @@
 
                     <button name="disable_hotspot_user"
                             type="object"
-                            invisible="disabled != False or hotspot_user_id == False"
+                            invisible="disabled != False or (hotspot_user_id != False and disabled == True)"
                             confirm="Are you sure you want to Disable this User?"
                             string="Disable User"
                             class="btn-primary"/>
 
                     <button name="enable_hotspot_user"
                             type="object"
-                            invisible="disabled == True or hotspot_user_id == False"
+                            invisible="disabled == False or (disabled == False and hotspot_user_id != False)"
                             confirm="Are you sure you want to Disable this User?"
                             string="Enable User"
                             class="btn-primary"/>
@@ -52,6 +52,9 @@
                             <field name="user_profile_limitation_ids">
                                 <list string="Profiles">
                                     <field name="hotspot_profile_limitation_id"/>
+                                    <field name="download_speed"/>
+                                    <field name="upload_speed"/>
+                                    <field name="validity"/>
                                     <field name="is_activated"/>
                                 </list>
                             </field>
