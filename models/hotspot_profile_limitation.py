@@ -24,6 +24,8 @@ class HotspotProfileLimitation(models.Model):
 
     name = fields.Char(string='Package Name', required=True)
     hotspot_profile_id = fields.Many2one('radius_manager.hotspot_profile', string='Hotspot Profile')
+    profile_display_name = fields.Char(string='Profile Display Name', related='hotspot_profile_id.name_for_user',
+                                       readonly=True)
     hotspot_limitation_id = fields.Many2one('radius_manager.hotspot_limitation',
                                             string='Hotspot Profile Limitation')
 
@@ -38,8 +40,6 @@ class HotspotProfileLimitation(models.Model):
     saturday = fields.Boolean(string='Saturday')
     sunday = fields.Boolean(string='Sunday')
     hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
-
-
 
     def get_active_weekdays(self):
         """
