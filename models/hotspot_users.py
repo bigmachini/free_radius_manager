@@ -32,7 +32,7 @@ class HotspotUser(models.Model):
         for vals in vals_list:
             code = vals["phone"][-6:]
             partner = self.env['res.partner'].browse(vals["partner_id"])
-            vals["username"] = f'{partner.unique_code.lower()}_{code}'
+            vals["username"] = f'{partner.unique_code.lower()}{code}'
             vals["password"] = vals["phone"][-4:]
         return super(HotspotUser, self).create(vals_list)
 
