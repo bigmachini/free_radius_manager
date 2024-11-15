@@ -49,6 +49,10 @@ class HotspotUser(models.Model):
             router.connect()
             response = router.create_user(username=self.username, password=self.password,
                                           customer=self.partner_id.kredoh_username)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to create user: {error_msg}")
+
             logging.info(f"User '{response}' created successfully!")
             user = router.get_user_by_identifier(self.username)
             logging.info(f"User: {user}")
@@ -56,8 +60,6 @@ class HotspotUser(models.Model):
                 self.hotspot_user_id = user.get(".id")
                 logging.info(f"User ID: {self.hotspot_user_id}")
 
-        except Exception as e:
-            print(f"Failed to create user: {e}")
         finally:
             router.disconnect()
             logging.info("HotspotUser::create_hotspot_user Disconnected from MikroTik.")
@@ -70,11 +72,13 @@ class HotspotUser(models.Model):
             response = router.update_user(user_id=self.hotspot_user_id, username=self.username, password=self.password,
                                           disabled=True,
                                           customer=self.partner_id.kredoh_username)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to disable user: {error_msg}")
+
             logging.info(f"HotspotUser::disable_userUser '{response}' disabled successfully!")
             self.disabled = True
 
-        except Exception as e:
-            print(f"HotspotUser::disable_userUser Failed to disable user  e --> {e}")
         finally:
             router.disconnect()
             logging.info("HotspotUser::disable_userUser Disconnected from MikroTik.")
@@ -87,11 +91,13 @@ class HotspotUser(models.Model):
             response = router.update_user(user_id=self.hotspot_user_id, username=self.username, password=self.password,
                                           disabled=False,
                                           customer=self.partner_id.kredoh_username)
+            if len(response) == 2:
+                error_msg = response[0]['']
+                raise ValidationError(f"Failed to enable user: {error_msg}")
+
             logging.info(f"HotspotUser::enable_hotspot_user '{response}' disabled successfully!")
             self.disabled = False
 
-        except Exception as e:
-            print(f"HotspotUser::disable_userUser Failed to disable user  e --> {e}")
         finally:
             router.disconnect()
             logging.info("HotspotUser::disable_userUser Disconnected from MikroTik.")
@@ -107,8 +113,9 @@ class HotspotUser(models.Model):
                 response = router.assign_profile_to_user(customer=self.partner_id.kredoh_username,
                                                          number=user.get("number"),
                                                          profile_name=profile_name)
-                if not response:
-                    raise ValidationError("Failed to assign user to profile.")
+                if len(response) == 2:
+                    error_msg = response[0]['']
+                    raise ValidationError(f"Failed to ASSIGN profile to user: {error_msg}")
                 logging.info(f"HotspotUser::assign_profile_user '{response}' assigned successfully!")
 
         finally:
