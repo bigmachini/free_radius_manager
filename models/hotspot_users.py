@@ -16,7 +16,7 @@ class HotspotUser(models.Model):
 
     name = fields.Char(string="Name", required=True)
     username = fields.Char(string="Username", readonly=True)
-    password = fields.Integer(string="password", readonly=True)
+    password = fields.Char(string="password", readonly=True)
     phone = fields.Char(string="Phone")
     partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
                                  required=True)
