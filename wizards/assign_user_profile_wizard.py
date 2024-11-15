@@ -37,14 +37,12 @@ class AssignUserProfileWizard(models.TransientModel):
 
         if profile:
             raise ValidationError(f"Profile already assigned")
-        try:
-            user_profile_limitation = self.env['radius_manager.user_profile_limitation'].create([{
-                'hotspot_user_id': self.hotspot_user_id.id,
-                'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
-                'is_activated': self.activate_profile
-            }])
 
-            if user_profile_limitation:
-                self.hotspot_user_id.assign_profile_user( self.hotspot_profile_limitation_id.hotspot_profile_id.name)
-        except Exception as ex:
-            logging.error(f"AssignUserProfileWizard::assign_profile Error assigning profile to user e --> {ex}")
+        user_profile_limitation = self.env['radius_manager.user_profile_limitation'].create([{
+            'hotspot_user_id': self.hotspot_user_id.id,
+            'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
+            'is_activated': self.activate_profile
+        }])
+
+        if user_profile_limitation:
+            self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)
