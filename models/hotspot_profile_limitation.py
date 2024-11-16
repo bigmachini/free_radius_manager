@@ -40,7 +40,8 @@ class HotspotProfileLimitation(models.Model):
     saturday = fields.Boolean(string='Saturday', default=True)
     sunday = fields.Boolean(string='Sunday', default=True)
     hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
-
+    partner_id = fields.Many2one('res.partner', string='Partner',
+                                 domain=[('is_kredoh_partner', '=', True)])
     def get_active_weekdays(self):
         """
         Generate a comma-separated string of active weekdays based on boolean fields.
