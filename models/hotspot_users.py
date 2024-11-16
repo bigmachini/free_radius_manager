@@ -26,7 +26,6 @@ class HotspotUser(models.Model):
                                                   string="User Profile Limitations")
     hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
                                                string="User Sessions")
-    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     @api.model_create_multi
     def create(self, vals_list):

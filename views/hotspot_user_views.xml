@@ -39,7 +39,6 @@
                             <field name="name"/>
                             <field name="phone"/>
                             <field name="partner_id"/>
-                            <field name="router_id" required="True"/>
                         </group>
                         <group string="Hotspot Details">
                             <field name="username"/>
@@ -90,7 +89,6 @@
                 <field name="password"/>
                 <field name="phone"/>
                 <field name="partner_id"/>
-                <field name="router_id" required="True"/>
                 <field name="disabled"/>
             </list>
         </field>
