@@ -15,7 +15,6 @@ class UserProfileLimitation(models.Model):
     is_activated = fields.Boolean(string="Is Activated", default=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
                                  domain=[('is_kredoh_partner', '=', True)])
-    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     @api.depends('hotspot_user_id.name', 'hotspot_profile_limitation_id.name')
     def _compute_name(self):
