@@ -2,13 +2,8 @@ import logging
 
 from odoo import models, fields
 from odoo.exceptions import ValidationError
-from .config import host, port, username, password
 from ..utils.router_manager import RouterManager
 from .utils import bytes_to_human_readable
-
-USER_MANAGER_PATH = "/tool/user-manager/user"
-
-router = RouterManager(host=host, port=port, username=username, password=password, debug=True)
 
 
 class HotspotRouter(models.Model):
@@ -31,11 +26,21 @@ class HotspotRouter(models.Model):
     firmware_version = fields.Char(string='Firmware Version', readonly=True)
     architecture_name = fields.Char(string='Architecture Name', readonly=True)
     cpu_count = fields.Char(string='CPU Count', readonly=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', domain=[('is_kredoh_partner', '=', True)])
 
     def update_router_info(self):
         """
         Update the router information.
         """
+        if not self.partner_id.kredoh_username:
+            raise ValidationError("The partner does not have a Kredoh username.")
+
+        host = self.router_id.host
+        port = self.router_id.port
+        username = self.router_id.username
+        password = self.router_id.password
+        router = RouterManager(host=host, port=port, username=username, password=password, debug=True)
+
         router.connect()
         response = router.get_router_info()
         if len(response) == 2:
