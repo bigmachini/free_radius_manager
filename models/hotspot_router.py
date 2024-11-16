@@ -32,13 +32,11 @@ class HotspotRouter(models.Model):
         """
         Update the router information.
         """
-        if not self.partner_id.kredoh_username:
-            raise ValidationError("The partner does not have a Kredoh username.")
 
-        host = self.router_id.host
-        port = self.router_id.port
-        username = self.router_id.username
-        password = self.router_id.password
+        host = self.host
+        port = self.port
+        username = self.username
+        password = self.password
         router = RouterManager(host=host, port=port, username=username, password=password, debug=True)
 
         router.connect()
