@@ -13,6 +13,8 @@ class UserProfileLimitation(models.Model):
     upload_speed = fields.Char(related='hotspot_profile_limitation_id.hotspot_limitation_id.rate_limit_tx', )
     validity = fields.Char(related='hotspot_profile_limitation_id.hotspot_profile_id.validity', )
     is_activated = fields.Boolean(string="Is Activated", default=False)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                 domain=[('is_kredoh_partner', '=', True)])
     router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     @api.depends('hotspot_user_id.name', 'hotspot_profile_limitation_id.name')
