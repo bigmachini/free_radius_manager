@@ -21,7 +21,6 @@ class HotspotProfile(models.Model):
                            help='The validity of the profile in seconds(s),minutes(m),hours(h),days(d) or unlimited')
     price = fields.Float(string='Price', required=True)
     hotspot_profile_id = fields.Char(string="Hotspot Profile ID", readonly=True)
-    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     def create_hotspot_profile(self):
         """
