@@ -13,6 +13,21 @@
                         <field name="hotspot_user_count" invisible="is_kredoh_partner == False"/>
                     </group>
                 </page>
+                <page string="Hotspot Routers" name="hotspot_routers">
+                    <field name="hotspot_router_ids">
+                        <list string="Hotspot Routers" name="hotspot_routers">
+                            <field name="name"/>
+                            <field name="host"/>
+                            <field name="port"/>
+                            <field name="model"/>
+                            <field name="uptime"/>
+                            <field name="cpu_load"/>
+                            <field name="free_memory"/>
+                            <field name="disk_space"/>
+                            <field name="firmware_version"/>
+                        </list>
+                    </field>
+                </page>
             </notebook>
         </field>
     </record>
