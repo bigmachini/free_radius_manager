@@ -10,6 +10,7 @@ class ResPartner(models.Model):
     unique_code = fields.Char(string="Unique Code")
     hotspot_user_ids = fields.One2many('radius_manager.hotspot_user', 'partner_id', string="Hotspot Users")
     hotspot_user_count = fields.Integer(string="Hotspot Users Count", compute='_compute_hotspot_user_count')
+    hotspot_router_ids = fields.One2many('radius_manager.hotspot_router', 'partner_id', string="Hotspot Routers")
 
     def write(self, vals):
         res = super(ResPartner, self).write(vals)
