@@ -100,7 +100,6 @@ class HotspotLimitation(models.Model):
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
                                  domain=[('is_kredoh_partner', '=', True)])
     hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
-    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     def create_limitation(self):
         """
