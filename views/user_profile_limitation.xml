@@ -10,6 +10,7 @@
                         <field name="hotspot_user_id"/>
                         <field name="hotspot_profile_limitation_id"/>
                         <field name="is_activated"/>
+                        <field name="partner_id" required="True"/>
                         <field name="router_id" required="True"/>
                     </group>
                 </sheet>
@@ -24,6 +25,7 @@
             <list string="User Profile Limitations" create="false" edit="false" default_order="id desc">
                 <field name="hotspot_user_id"/>
                 <field name="hotspot_profile_limitation_id"/>
+                <field name="partner_id" required="True"/>
                 <field name="router_id" required="True"/>
                 <field name="is_activated"/>
             </list>

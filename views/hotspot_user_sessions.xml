@@ -44,6 +44,7 @@
             <list string="User Sessions" create="false" edit="false" default_order="start_time desc">
                 <field name="hotspot_user"/>
                 <field name="router_id" required="True"/>
+                <field name="partner_id" required="True"/>
                 <field name="calling_station_id"/>
                 <field name="user_ip"/>
                 <field name="uptime"/>

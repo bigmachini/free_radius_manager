@@ -18,11 +18,9 @@
                             <field name="password" password="True"/>
                             <field name="host"/>
                             <field name="port"/>
+                            <field name="partner_id"/>
                         </group>
-                        <group string="Disk Information">
-                            <field name="free_disk_space"/>
-                            <field name="disk_space"/>
-                        </group>
+
                         <group string="Router Details">
                             <field name="model"/>
                             <field name="firmware_version"/>
@@ -30,6 +28,10 @@
                             <field name="uptime"/>
                             <field name="cpu_count"/>
                             <field name="cpu_load"/>
+                        </group>
+                        <group string="Disk Information">
+                            <field name="free_disk_space"/>
+                            <field name="disk_space"/>
                         </group>
                         <group string="Memory Information">
                             <field name="free_memory"/>
