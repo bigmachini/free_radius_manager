@@ -40,6 +40,7 @@ class HotspotProfileLimitation(models.Model):
     saturday = fields.Boolean(string='Saturday', default=True)
     sunday = fields.Boolean(string='Sunday', default=True)
     hotspot_profile_limitation_id = fields.Char(string='Profile Limitation ID', readonly=True)
+    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     def get_active_weekdays(self):
         """
