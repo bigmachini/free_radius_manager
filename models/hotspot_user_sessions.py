@@ -40,7 +40,6 @@ class HotspotUserSession(models.Model):
     transfer_amount = fields.Char(string='Transfer Amount', readonly=True)
     unique_session_id = fields.Char(string='Unique Session ID', readonly=True)
     nas_port = fields.Char(string='NAS Port', readonly=True)
-    router_id = fields.Many2one('radius_manager.hotspot_router', string='Router', required=True)
 
     _sql_constraints = [('unique_session_id_uniq', 'unique(unique_session_id)', 'Session ID must be unique')]
 

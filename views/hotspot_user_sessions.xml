@@ -17,7 +17,6 @@
                             <field name="user_ip" readonly="1"/>
                             <field name="host_ip" readonly="1"/>
                             <field name="status" readonly="1"/>
-                            <field name="router_id" required="True"/>
                         </group>
                         <group>
                             <field name="nas_port" readonly="1"/>
@@ -43,7 +42,6 @@
         <field name="arch" type="xml">
             <list string="User Sessions" create="false" edit="false" default_order="start_time desc">
                 <field name="hotspot_user"/>
-                <field name="router_id" required="True"/>
                 <field name="partner_id" required="True"/>
                 <field name="calling_station_id"/>
                 <field name="user_ip"/>
