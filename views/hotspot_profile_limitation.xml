@@ -35,7 +35,6 @@
                             <field name="hotspot_limitation_id" options="{'no_create': True}" required="True"/>
                             <field name="hotspot_profile_limitation_id"/>
                             <field name="partner_id" required="True"/>
-                            <field name="router_id" required="True"/>
                         </group>
                         <group string="Time Active" name="time_active">
                             <field name="from_time" widget="float_time" required="True"/>
@@ -65,7 +64,6 @@
                 <field name="hotspot_profile_id"/>
                 <field name="hotspot_profile_limitation_id"/>
                 <field name="partner_id" required="True"/>
-                <field name="router_id" required="True"/>
                 <field name="from_time"/>
                 <field name="till_time"/>
             </list>
