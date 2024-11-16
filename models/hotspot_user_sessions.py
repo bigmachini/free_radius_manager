@@ -9,10 +9,6 @@ from ..utils.user_manager_sessions import HotspotSessionManager
 router = HotspotSessionManager(host=host, port=port, username=username, password=password, debug=True)
 
 
-
-
-
-
 class HotspotUserSession(models.Model):
     _name = 'radius_manager.hotspot_user_session'
     _description = 'User Sessions'
@@ -42,6 +38,7 @@ class HotspotUserSession(models.Model):
     transfer = fields.Integer(string='Transfer', readonly=True)
     transfer_amount = fields.Char(string='Transfer Amount', readonly=True)
     unique_session_id = fields.Char(string='Unique Session ID', readonly=True)
+    nas_port = fields.Char(string='NAS Port', readonly=True)
 
     _sql_constraints = [('unique_session_id_uniq', 'unique(unique_session_id)', 'Session ID must be unique')]
 
@@ -75,10 +72,6 @@ class HotspotUserSession(models.Model):
                                                                              session.get('calling-station-id', None))
 
                 # Check if the session already exists
-                if self.env['radius_manager.hotspot_user_session'].search_count(
-                        [('unique_session_id', '=', unique_session_id)]) > 0:
-                    logging.info(f"Session with unique_session_id {unique_session_id} already exists. Skipping.")
-                    continue
 
                 download = int(session['download'])
                 upload = int(session['upload'])
@@ -100,7 +93,8 @@ class HotspotUserSession(models.Model):
                     'upload': session.get('upload', None),
                     'upload_amount': bytes_to_human_readable(upload),
                     'transfer': transfer,
-                    'transfer_amount': bytes_to_human_readable(transfer)
+                    'transfer_amount': bytes_to_human_readable(transfer),
+                    'nas_port': session.get('nas-port', None),
                 }
                 if session.get('terminate-cause', None):
                     val['terminate_cause'] = session.get("terminate-cause", None),
@@ -120,8 +114,14 @@ class HotspotUserSession(models.Model):
 
                 logging.info(f"HotspotUserSession::get_sessions Session: {val}")
 
-                if len(self.env['radius_manager.hotspot_user_session'].search(
-                        [('unique_session_id', '=', unique_session_id)], limit=1)) == 0:
+                session = self.env['radius_manager.hotspot_user_session'].search(
+                    [('unique_session_id', '=', unique_session_id)], limit=1)
+
+                if session:
+                    logging.info(f"HotspotUserSession::get_sessions Updating session for {session['customer']}")
+                    session.write(val)
+                else:
+                    logging.info(f"HotspotUserSession::get_sessions Creating session for {session['customer']}")
                     sessions_list.append(val)
 
             self.create(sessions_list)
