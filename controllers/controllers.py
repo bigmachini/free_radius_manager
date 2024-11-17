@@ -81,6 +81,8 @@ class RadiusManagerAPI(http.Controller):
                 "name": mac_address
             })
 
+            hotspot_user.create_hotspot_user()
+
         wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
             'hotspot_profile_limitation_id': profile_limitation.id,
             'hotspot_user_id': hotspot_user.id
