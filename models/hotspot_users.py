@@ -27,15 +27,6 @@ class HotspotUser(models.Model):
     hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
                                                string="User Sessions")
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            code = vals["phone"][-6:]
-            partner = self.env['res.partner'].browse(vals["partner_id"])
-            vals["username"] = f'{partner.unique_code.lower()}{code}'
-            vals["password"] = vals["phone"][-4:]
-        return super(HotspotUser, self).create(vals_list)
-
     def create_hotspot_user(self):
         """
         Create a new User Manager user.
