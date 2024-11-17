@@ -44,6 +44,7 @@ class HotspotProfileLimitation(models.Model):
                                  domain=[('is_kredoh_partner', '=', True)],
                                  readonly=True,
                                  default=lambda self: self.env.user.partner_id.id)
+
     def get_active_weekdays(self):
         """
         Generate a comma-separated string of active weekdays based on boolean fields.
