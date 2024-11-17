@@ -101,7 +101,8 @@
     </record>
 
     <menuitem id="menu_hotspot_home"
-              name="Hotspot Manager"/>
+              name="Hotspot Manager"
+              groups="radius_manager.group_radius_manager_user,radius_manager.group_radius_manager_manager,radius_manager.group_radius_manager_admin"/>
 
     <menuitem id="menu_users"
               name="Users"

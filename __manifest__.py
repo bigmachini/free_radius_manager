@@ -7,6 +7,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'security/radius_manager_security.xml',
         'views/assign_user_profile_wizard.xml',
         'views/hotspot_user_views.xml',
         'views/res_partner.xml',
