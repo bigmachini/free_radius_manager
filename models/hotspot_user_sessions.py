@@ -41,8 +41,6 @@ class HotspotUserSession(models.Model):
     unique_session_id = fields.Char(string='Unique Session ID', readonly=True)
     nas_port = fields.Char(string='NAS Port', readonly=True)
 
-    _sql_constraints = [('unique_session_id_uniq', 'unique(unique_session_id)', 'Session ID must be unique')]
-
     @staticmethod
     def get_unique_session_id(nas_port, acct_session_id, calling_station_id):
         """
