@@ -30,10 +30,9 @@
                     <group>
                         <field name="name"/>
                         <field name="name_for_user"/>
-                        <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="price"/>
-                        <field name="partner_id" required="True"/>
+                        <field name="partner_id"/>
                         <field name="hotspot_profile_id"/>
                     </group>
                 </sheet>
@@ -51,7 +50,6 @@
                 <field name="validity"/>
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="partner_id" required="True"/>
             </list>
         </field>
     </record>
