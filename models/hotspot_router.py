@@ -26,7 +26,10 @@ class HotspotRouter(models.Model):
     firmware_version = fields.Char(string='Firmware Version', readonly=True)
     architecture_name = fields.Char(string='Architecture Name', readonly=True)
     cpu_count = fields.Char(string='CPU Count', readonly=True)
-    partner_id = fields.Many2one('res.partner', string='Partner', domain=[('is_kredoh_partner', '=', True)])
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                 domain=[('is_kredoh_partner', '=', True)],
+                                 readonly=True,
+                                 default=lambda self: self.env.user.partner_id.id)
 
     def update_router_info(self):
         """

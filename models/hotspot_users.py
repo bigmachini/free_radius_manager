@@ -18,8 +18,10 @@ class HotspotUser(models.Model):
     username = fields.Char(string="Username", readonly=True)
     password = fields.Char(string="password", readonly=True)
     phone = fields.Char(string="Phone")
-    partner_id = fields.Many2one('res.partner', string="Partner", domain=[('is_kredoh_partner', '=', True)],
-                                 required=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                 domain=[('is_kredoh_partner', '=', True)],
+                                 readonly=True,
+                                 default=lambda self: self.env.user.partner_id.id)
     hotspot_user_id = fields.Char(string="Hotspot User ID", readonly=True)
     disabled = fields.Boolean(string="Disabled", default=False)
     user_profile_limitation_ids = fields.One2many('radius_manager.user_profile_limitation', 'hotspot_user_id',

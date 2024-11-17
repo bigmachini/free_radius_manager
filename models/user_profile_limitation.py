@@ -14,7 +14,9 @@ class UserProfileLimitation(models.Model):
     validity = fields.Char(related='hotspot_profile_limitation_id.hotspot_profile_id.validity', )
     is_activated = fields.Boolean(string="Is Activated", default=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
-                                 domain=[('is_kredoh_partner', '=', True)])
+                                 domain=[('is_kredoh_partner', '=', True)],
+                                 readonly=True,
+                                 default=lambda self: self.env.user.partner_id.id)
 
     @api.depends('hotspot_user_id.name', 'hotspot_profile_limitation_id.name')
     def _compute_name(self):

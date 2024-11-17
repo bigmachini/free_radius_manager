@@ -19,8 +19,7 @@ class HotspotUserSession(models.Model):
     )
 
     customer = fields.Char(string='Customer', readonly=True)
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
-                                 domain=[('is_kredoh_partner', '=', True)])
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     hotspot_user = fields.Char(string='Username', readonly=True)
     hotspot_user_id = fields.Many2one('radius_manager.hotspot_user', string='Hotspot User')
     calling_station_id = fields.Char(string='MAC Address', readonly=True)
