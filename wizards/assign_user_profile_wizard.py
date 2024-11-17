@@ -31,6 +31,9 @@ class AssignUserProfileWizard(models.TransientModel):
         if not self.hotspot_profile_limitation_id.hotspot_profile_limitation_id:
             raise ValidationError("Profile Limitation not created.")
 
+        if not self.hotspot_user_id.hotspot_user_id:
+            raise ValidationError("User not created.")
+
         profile = self.env['radius_manager.user_profile_limitation'].search(
             [('hotspot_user_id', '=', self.hotspot_user_id.id),
              ('hotspot_profile_limitation_id', '=', self.hotspot_profile_limitation_id.id)], limit=1)
