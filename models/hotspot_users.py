@@ -19,9 +19,7 @@ class HotspotUser(models.Model):
     password = fields.Char(string="password", readonly=True)
     phone = fields.Char(string="Phone")
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
-                                 domain=[('is_kredoh_partner', '=', True)],
-                                 readonly=True,
-                                 default=lambda self: self.env.user.partner_id.id)
+                                 domain=[('is_kredoh_partner', '=', True)])
     hotspot_user_id = fields.Char(string="Hotspot User ID", readonly=True)
     disabled = fields.Boolean(string="Disabled", default=False)
     user_profile_limitation_ids = fields.One2many('radius_manager.user_profile_limitation', 'hotspot_user_id',
@@ -31,12 +29,12 @@ class HotspotUser(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        ids = super(HotspotUser, self).create(vals_list)
-
-        for _id in ids:
-            code = _id.phone[-6:]
-            _id.username = f'{_id.partner_id.unique_code.lower()}{code}'
-            _id.password = _id.phone[-4:]
+        for vals in vals_list:
+            code = vals["phone"][-6:]
+            partner = self.env['res.partner'].browse(vals["partner_id"])
+            vals["username"] = f'{partner.unique_code.lower()}{code}'
+            vals["password"] = vals["phone"][-4:]
+        return super(HotspotUser, self).create(vals_list)
 
     def create_hotspot_user(self):
         """
