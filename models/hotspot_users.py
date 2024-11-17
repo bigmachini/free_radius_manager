@@ -31,14 +31,12 @@ class HotspotUser(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        if not self.partner_id.is_kredoh_partner:
-            raise ValidationError("You can only create users is you are a KREDOH partner")
+        ids = super(HotspotUser, self).create(vals_list)
 
-        for vals in vals_list:
-            code = vals["phone"][-6:]
-            vals["username"] = f'{self.partner_id.unique_code.lower()}{code}'
-            vals["password"] = vals["phone"][-4:]
-        return super(HotspotUser, self).create(vals_list)
+        for _id in ids:
+            code = _id.phone[-6:]
+            _id.username = f'{_id.partner_id.unique_code.lower()}{code}'
+            _id.password = _id.phone[-4:]
 
     def create_hotspot_user(self):
         """
