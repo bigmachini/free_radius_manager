@@ -129,8 +129,4 @@ class MikroTik:
         """Execute a command on the router."""
         self.write(command, params)
         response = self.read(is_list)
-        if is_list:
-            logging.info(f"MikroTik::execute  is_list == True res -->{response}")
-        else:
-            logging.info(f"MikroTik::execute  is_list == False res -->{response}")
         return response

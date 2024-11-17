@@ -61,14 +61,17 @@ class UserManager(MikroTik):
         number = 0
         for user in users:
             if user.get(".id") == identifier or user.get("username") == identifier:
-                return {
+                data =  {
                     ".id": user.get(".id"),
                     "username": user.get("username"),
                     "password": user.get("password"),
                     "customer": user.get("customer"),
                     "disabled": user.get("disabled"),
                     "number": number
+
                 }
+                logging.info(f"UserManager::get_user_by_identifier Found user {data}")
+                return data
             number += 1
         return None
 

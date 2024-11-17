@@ -45,7 +45,7 @@ class AssignUserProfileWizard(models.TransientModel):
             'hotspot_user_id': self.hotspot_user_id.id,
             'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
             'partner_id' : self.hotspot_user_id.partner_id.id,
-            'is_activated': self.activate_profile
+            'is_activated': True
         }])
 
         if user_profile_limitation:
