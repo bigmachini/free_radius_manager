@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.exceptions import ValidationError
 from .config import host, port, username, password
 from ..utils.user_manager_profiles import UserManagerProfiles
@@ -15,8 +15,10 @@ class HotspotProfile(models.Model):
     name = fields.Char(string='Profile Name', required=True)
     name_for_user = fields.Char(string='User Display Name', required=True,
                                 help='The name to display on the hotspot login page.')
-    partner_id = fields.Many2one('res.partner', string='Partner',
-                                 domain=[('is_kredoh_partner', '=', True)])
+    partner_id = fields.Many2one('res.partner', string='Partner', required=True,
+                                 domain=[('is_kredoh_partner', '=', True)],
+                                 readonly=True,
+                                 default=lambda self: self.env.user.partner_id.id)
     validity = fields.Char(string='Validity', required=True,
                            help='The validity of the profile in seconds(s),minutes(m),hours(h),days(d) or unlimited')
     price = fields.Float(string='Price', required=True)

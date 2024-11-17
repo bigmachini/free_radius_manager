@@ -98,7 +98,8 @@ class HotspotLimitation(models.Model):
 	        
 		Example: 1G (1 GB).""", default='0')
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
-                                 domain=[('is_kredoh_partner', '=', True)])
+                                 domain=[('is_kredoh_partner', '=', True)],
+                                 default=lambda self: self.env.user.partner_id.id)
     hotspot_limitation_id = fields.Char(string="Hotspot Profile Limitation ID", readonly=True)
 
     def create_limitation(self):
