@@ -204,6 +204,7 @@ class UserManager(MikroTik):
         }
 
         try:
+            response = self.execute("/tool/user-manager/user/reset-counters", params)
             response = self.execute("/tool/user-manager/user/clear-profiles", params)
             return response
         except Exception as e:
