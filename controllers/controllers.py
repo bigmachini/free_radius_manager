@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 import json
-import re
+import logging
 
 from odoo import http
 from odoo.http import request
-import logging
-
-from odoo.tools import partition
 from .utils import validate_mac_address
 
 HEADERS = [('Content-Type', 'application/json'),
