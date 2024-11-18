@@ -37,7 +37,7 @@ class HotspotUser(models.Model):
 
         active_user_profile_limitation = self.user_profile_limitation_ids.filtered(lambda p: p.is_activated)
         if not active_user_profile_limitation:
-            logging.info("No active profile limitation found.")
+            logging.info(f"HotspotUser::check_and_deactivate_profile_limitation:: No active profile limitation found.")
             return
 
         hotspot_profile_limitation = active_user_profile_limitation.hotspot_profile_limitation_id
@@ -46,13 +46,23 @@ class HotspotUser(models.Model):
 
         latest_session = self.hotspot_user_session_ids.sorted(key=lambda s: s.create_date, reverse=True)[:1]
         if not latest_session:
-            logging.info("No sessions found.")
+            logging.info(f"HotspotUser::check_and_deactivate_profile_limitation:: No sessions found.")
             return
 
         latest_session_uptime = latest_session.uptime
         if latest_session_uptime == uptime_limit:
-            active_user_profile_limitation.is_activated = False
-            logging.info("Profile limitation deactivated due to matching uptime.")
+            user = router.get_user_by_identifier(self.username)
+            if user:
+                response = router.clear_user_profile(number=user.get("number"))
+                if len(response) == 2:
+                    error_msg = response[0]['']
+                    logging.error(
+                        f"HotspotUser::check_and_deactivate_profile_limitation:: Failed to create user: {error_msg}")
+                else:
+                    active_user_profile_limitation.is_activated = False
+
+            logging.info(
+                f"HotspotUser::check_and_deactivate_profile_limitation:: Profile limitation deactivated due to matching uptime.")
 
     def create_hotspot_user(self):
         """

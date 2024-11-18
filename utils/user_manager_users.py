@@ -58,7 +58,7 @@ class UserManager(MikroTik):
         number = 0
         for user in users:
             if user.get(".id") == identifier or user.get("username") == identifier:
-                data =  {
+                data = {
                     ".id": user.get(".id"),
                     "username": user.get("username"),
                     "password": user.get("password"),
@@ -190,26 +190,23 @@ class UserManager(MikroTik):
                 f"UserManager::assign_profile_to_user Error assigning profile {profile_name} to user {number} e --> {e}")
             return None
 
-    def activate_user_profile(self, user_id, profile_name):
+    def clear_user_profile(self, number):
         """
-        Activate a profile assigned to a user.
+        Clear Profile
 
-        :param user_id: user ID.
-        :param profile_name: The profile to activate for the user.
-        :return: The RouterOS response.
+        :param number: User to clear profile on.
         """
-        logging.info(f"UserManager::activate_user_profile Activating profile {profile_name} for user {user_id}")
+        logging.info(f"UserManager::user_clear_profile Clearing profiles for user {number}")
 
         # Activate the profile
         params = {
-            "user": user_id,
-            "profile": profile_name,
+            "numbers": number,
         }
 
         try:
-            response = self.execute("/tool/user-manager/user/activate", params)
+            response = self.execute("/tool/user-manager/user/clear-profiles", params)
             return response
         except Exception as e:
             logging.info(
-                f"UserManager::activate_user_profile Error activating profile {profile_name} for user {user_id} e --> {e}")
+                f"UserManager::user_clear_profile Error clearing profile for user {number} e --> {e}")
             return []
