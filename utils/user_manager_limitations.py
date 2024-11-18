@@ -28,7 +28,16 @@ class UserManagerLimitations(MikroTik):
         :return: The RouterOS response.
         """
 
-        params = {"name": name, "uptime-limit": uptime_limit.lower(), "owner": owner}
+        params = {"name": name,
+                  "uptime-limit": uptime_limit.lower(),
+                  "owner": owner,
+                  # "rate-limit-burst-limit-rx": 0,
+                  # "rate-limit-burst-limit-tx": 0,
+                  # "burst-threshold-rx": 0,
+                  # "burst-threshold-tx": 0,
+                   "rate-limit-burst-time-rx": '5s',
+                   "rate-limit-burst-time-tx": '5s'
+                  }
         if rate_limit_rx:
             params["rate-limit-rx"] = rate_limit_rx.upper()
         if rate_limit_tx:
@@ -63,6 +72,7 @@ class UserManagerLimitations(MikroTik):
                     "rate-limit-rx": profile.get("rate-limit-rx"),
                     "rate-limit-tx": profile.get("rate-limit-tx"),
                     "transfer-limit": profile.get("transfer-limit"),
+
                 }
         return None
 
@@ -92,6 +102,9 @@ class UserManagerLimitations(MikroTik):
                   "rate-limit-min-rx": rate_limit_min_rx.upper(),
                   "rate-limit-min-tx": rate_limit_min_tx.upper(),
                   "transfer-limit": transfer_limit.upper(),
+                  "rate-limit-burst-time-rx": '5s',
+                  "rate-limit-burst-time-tx": '5s'
+
                   }
 
         # Execute the command on the router
