@@ -79,8 +79,7 @@ class RadiusManagerAPI(http.Controller):
                 'data': {}
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
-        mac_address = validate_mac_address(data['mac_address'])
-        if not mac_address:
+        if not validate_mac_address(data['mac_address']):
             response = {
                 'status': False,
                 'message': 'Invalid MAC address format',
@@ -88,8 +87,11 @@ class RadiusManagerAPI(http.Controller):
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
 
+        mac_address = data['mac_address']
         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
             [('username', '=', mac_address)], limit=1)
+
+        logging.info(f'RadiusManagerAPI::user_sign_up:: data --> {data}')
 
         if not hotspot_user:
             hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
@@ -99,6 +101,8 @@ class RadiusManagerAPI(http.Controller):
                 "partner_id": data['partner_id'],
                 "name": mac_address
             })
+
+            hotspot_user.create_hotspot_user()
 
         profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
             [('id', '=', data["package_id"])], limit=1)
