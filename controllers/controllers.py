@@ -11,6 +11,31 @@ HEADERS = [('Content-Type', 'application/json'),
 
 
 class RadiusManagerAPI(http.Controller):
+    @http.route('/api/user/profile/<mac>', auth='public', type='http')
+    def get_user_profile(self, mac, **kw):
+        logging.info(f'RadiusManagerAPI::get_user_profile:: mac --> {mac}')
+
+        hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
+            [('username', '=', mac)], limit=1)
+        if not hotspot_user:
+            data = {'status': False, 'message': 'User not found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=404)
+
+        user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().search(
+            [('hotspot_user_id', '=', hotspot_user.id), ('is_activated', '=', True)], limit=1)
+        if not user_profile_limitation:
+            data = {'status': False, 'message': 'Profile limitation not found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=404)
+
+        data = {
+            'status': True,
+            'message': 'Active Profile Found',
+            'data': {
+                'user_id': hotspot_user.id,
+            }
+        }
+        return request.make_response(json.dumps(data), HEADERS, status=200)
+
     @http.route('/api/get_packages/<partner_id>', auth='public', type='http')
     def get_packages(self, partner_id, **kw):
         logging.info(f'RadiusManagerAPI::get_packages:: partner_id --> {partner_id}')
