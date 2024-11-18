@@ -21,6 +21,8 @@ class RadiusManagerAPI(http.Controller):
             data = {'status': False, 'message': 'User not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)
 
+        hotspot_user.check_and_deactivate_profile_limitation()
+
         user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().search(
             [('hotspot_user_id', '=', hotspot_user.id), ('is_activated', '=', True)], limit=1)
         if not user_profile_limitation:
