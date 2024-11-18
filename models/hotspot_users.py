@@ -60,9 +60,8 @@ class HotspotUser(models.Model):
                         f"HotspotUser::check_and_deactivate_profile_limitation:: Failed to create user: {error_msg}")
                 else:
                     active_user_profile_limitation.is_activated = False
-
-            logging.info(
-                f"HotspotUser::check_and_deactivate_profile_limitation:: Profile limitation deactivated due to matching uptime.")
+                    logging.info(
+                        f"HotspotUser::check_and_deactivate_profile_limitation:: Profile limitation deactivated due to matching uptime.")
 
     def create_hotspot_user(self):
         """
