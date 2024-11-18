@@ -6,6 +6,8 @@ from odoo import http
 from odoo.http import request
 import logging
 
+from .utils import validate_mac_address
+
 HEADERS = [('Content-Type', 'application/json'),
            ('Cache-Control', 'no-store')]
 
@@ -36,8 +38,8 @@ class RadiusManagerAPI(http.Controller):
         }
         return request.make_response(json.dumps(data), HEADERS, status=200)
 
-    @http.route('/api/get_packages/<partner_id>', auth='public', type='http')
-    def get_packages(self, partner_id, **kw):
+    @http.route('/api/user/packages/<partner_id>', auth='public', type='http')
+    def get_user_packages(self, partner_id, **kw):
         logging.info(f'RadiusManagerAPI::get_packages:: partner_id --> {partner_id}')
 
         partner = request.env['res.partner'].sudo().browse(int(partner_id))
@@ -60,15 +62,16 @@ class RadiusManagerAPI(http.Controller):
         data = json.dumps({'status': True, 'message': 'Packages retrieved successfully', 'data': response})
         return request.make_response(data, HEADERS, status=200)
 
-    @http.route('/api/sign_in', auth='public', type='http', method=['POST'], csrf=False)
-    def sign_in(self, **kw):
-        logging.info(f'RadiusManagerAPI::sign_in:: ')
+    @http.route('/api/user/signup', auth='public', type='http', method=['POST'], csrf=False)
+    def user_sign_up(self, **kw):
+        logging.info(f'RadiusManagerAPI::user_sign_up:: ')
 
         data = json.loads(request.httprequest.data)
-        logging.info(f'RadiusManagerAPI::sign_in:: data --> {data}')
+        logging.info(f'RadiusManagerAPI::user_sign_up:: data --> {data}')
 
         # validate missing fields
-        missing_fields = [field for field in ['mac_address', 'phone_number', 'package_id'] if field not in data]
+        missing_fields = [field for field in ['mac_address', 'phone_number', 'package_id', 'partner_id'] if
+                          field not in data]
         if missing_fields:
             response = {
                 'status': False,
@@ -76,23 +79,14 @@ class RadiusManagerAPI(http.Controller):
                 'data': {}
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
-
-        # validate MAC address
-        mac_address = data['mac_address']
-        mac_pattern = re.compile(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$')
-        if not mac_pattern.match(mac_address):
+        mac_address = validate_mac_address(data['mac_address'])
+        if not mac_address:
             response = {
                 'status': False,
                 'message': 'Invalid MAC address format',
                 'data': {}
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
-
-        profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
-            [('id', '=', data["package_id"])], limit=1)
-        if not profile_limitation:
-            data = {'status': False, 'message': 'Package not found', 'data': {}}
-            return request.make_response(json.dumps(data), HEADERS, status=404)
 
         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
             [('username', '=', mac_address)], limit=1)
@@ -102,11 +96,15 @@ class RadiusManagerAPI(http.Controller):
                 "username": mac_address,
                 "password": mac_address,
                 "phone": data['phone_number'],
-                "partner_id": profile_limitation.partner_id.id,
+                "partner_id": data['partner_id'],
                 "name": mac_address
             })
 
-            hotspot_user.create_hotspot_user()
+        profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
+            [('id', '=', data["package_id"])], limit=1)
+        if not profile_limitation:
+            data = {'status': False, 'message': 'Package not found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=404)
 
         wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
             'hotspot_profile_limitation_id': profile_limitation.id,
@@ -123,3 +121,68 @@ class RadiusManagerAPI(http.Controller):
             }
         }
         return request.make_response(json.dumps(response), HEADERS, status=200)
+
+    #
+    # @http.route('/api/sign_in', auth='public', type='http', method=['POST'], csrf=False)
+    # def sign_in(self, **kw):
+    #     logging.info(f'RadiusManagerAPI::sign_in:: ')
+    #
+    #     data = json.loads(request.httprequest.data)
+    #     logging.info(f'RadiusManagerAPI::sign_in:: data --> {data}')
+    #
+    #     # validate missing fields
+    #     missing_fields = [field for field in ['mac_address', 'phone_number', 'package_id'] if field not in data]
+    #     if missing_fields:
+    #         response = {
+    #             'status': False,
+    #             'message': f'Missing required fields: {", ".join(missing_fields)}',
+    #             'data': {}
+    #         }
+    #         return request.make_response(json.dumps(response), HEADERS, status=400)
+    #
+    #     # validate MAC address
+    #     mac_address = data['mac_address']
+    #     mac_pattern = re.compile(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$')
+    #     if not mac_pattern.match(mac_address):
+    #         response = {
+    #             'status': False,
+    #             'message': 'Invalid MAC address format',
+    #             'data': {}
+    #         }
+    #         return request.make_response(json.dumps(response), HEADERS, status=400)
+    #
+    #     profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
+    #         [('id', '=', data["package_id"])], limit=1)
+    #     if not profile_limitation:
+    #         data = {'status': False, 'message': 'Package not found', 'data': {}}
+    #         return request.make_response(json.dumps(data), HEADERS, status=404)
+    #
+    #     hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
+    #         [('username', '=', mac_address)], limit=1)
+    #
+    #     if not hotspot_user:
+    #         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
+    #             "username": mac_address,
+    #             "password": mac_address,
+    #             "phone": data['phone_number'],
+    #             "partner_id": profile_limitation.partner_id.id,
+    #             "name": mac_address
+    #         })
+    #
+    #         hotspot_user.create_hotspot_user()
+    #
+    #     wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
+    #         'hotspot_profile_limitation_id': profile_limitation.id,
+    #         'hotspot_user_id': hotspot_user.id
+    #     })
+    #     wizard.assign_profile()
+    #
+    #     response = {
+    #         'status': True,
+    #         'message': 'User signed in successfully',
+    #         'data': {
+    #             'user_id': hotspot_user.id,
+    #             'username': hotspot_user.username
+    #         }
+    #     }
+    #     return request.make_response(json.dumps(response), HEADERS, status=200)
