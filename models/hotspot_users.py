@@ -27,6 +27,33 @@ class HotspotUser(models.Model):
     hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
                                                string="User Sessions")
 
+    def cron_check_and_deactivate_profile_limitation(self):
+        users_with_profiles =  self.search([('user_profile_limitation_ids', '!=', False)])
+        for user in users_with_profiles:
+            user.check_and_deactivate_profile_limitation()
+
+    def check_and_deactivate_profile_limitation(self):
+        logging.info(f"HotspotUser::check_and_deactivate_profile_limitation")
+
+        active_user_profile_limitation = self.user_profile_limitation_ids.filtered(lambda p: p.is_activated)
+        if not active_user_profile_limitation:
+            logging.info("No active profile limitation found.")
+            return
+
+        hotspot_profile_limitation = active_user_profile_limitation.hotspot_profile_limitation_id
+        hotspot_limitation = hotspot_profile_limitation.hotspot_limitation_id
+        uptime_limit = hotspot_limitation.uptime_limit
+
+        latest_session = self.hotspot_user_session_ids.sorted(key=lambda s: s.create_date, reverse=True)[:1]
+        if not latest_session:
+            logging.info("No sessions found.")
+            return
+
+        latest_session_uptime = latest_session.uptime
+        if latest_session_uptime == uptime_limit:
+            active_user_profile_limitation.is_activated = False
+            logging.info("Profile limitation deactivated due to matching uptime.")
+
     def create_hotspot_user(self):
         """
         Create a new User Manager user.
