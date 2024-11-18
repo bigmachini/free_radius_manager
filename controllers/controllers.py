@@ -113,7 +113,8 @@ class RadiusManagerAPI(http.Controller):
         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
             [('username', '=', mac_address)], limit=1)
 
-        logging.info(f'RadiusManagerAPI::user_sign_up:: data --> {data}')
+        logging.info(f'RadiusManagerAPI::user_sign_up:: hotspot_user --> {hotspot_user}')
+
 
         if not hotspot_user:
             partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
@@ -132,6 +133,8 @@ class RadiusManagerAPI(http.Controller):
 
         profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
             [('id', '=', data["package_id"])], limit=1)
+        logging.info(f'RadiusManagerAPI::user_sign_up:: profile_limitation --> {profile_limitation}')
+
         if not profile_limitation:
             data = {'status': False, 'message': 'Package not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)

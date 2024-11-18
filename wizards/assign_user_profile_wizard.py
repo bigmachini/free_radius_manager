@@ -34,18 +34,17 @@ class AssignUserProfileWizard(models.TransientModel):
         if not self.hotspot_user_id.hotspot_user_id:
             raise ValidationError("User not created.")
 
-        profile = self.env['radius_manager.user_profile_limitation'].search(
-            [('hotspot_user_id', '=', self.hotspot_user_id.id),
-             ('hotspot_profile_limitation_id', '=', self.hotspot_profile_limitation_id.id),
-             ('is_activated', '=', True)], limit=1)
+        # profile = self.env['radius_manager.user_profile_limitation'].search(
+        #     [('hotspot_user_id', '=', self.hotspot_user_id.id),
+        #      ('hotspot_profile_limitation_id', '=', self.hotspot_profile_limitation_id.id),
+        #      ('is_activated', '=', True)], limit=1)
+        #
+        # if not profile:
+        user_profile_limitation = self.env['radius_manager.user_profile_limitation'].create([{
+            'hotspot_user_id': self.hotspot_user_id.id,
+            'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
+            'partner_id': self.hotspot_user_id.partner_id.id,
+        }])
 
-        if not profile:
-            user_profile_limitation = self.env['radius_manager.user_profile_limitation'].create([{
-                'hotspot_user_id': self.hotspot_user_id.id,
-                'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
-                'partner_id': self.hotspot_user_id.partner_id.id,
-                'is_activated': True
-            }])
-
-            if user_profile_limitation:
-                self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)
+        if user_profile_limitation:
+            self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)
