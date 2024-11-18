@@ -11,8 +11,8 @@ HEADERS = [('Content-Type', 'application/json'),
 
 
 class RadiusManagerAPI(http.Controller):
-    @http.route('/api/user/profile/clear', auth='public', type='http', method=['POST'])
-    def clear_user_profile(self, mac, **kw):
+    @http.route('/api/user/profile/clear', auth='public', type='http', methods=['POST'], csrf=False)
+    def clear_user_profile(self, **kw):
         logging.info(f'RadiusManagerAPI::clear_user_profile::')
 
         data = json.loads(request.httprequest.data)
@@ -84,7 +84,7 @@ class RadiusManagerAPI(http.Controller):
         data = json.dumps({'status': True, 'message': 'Packages retrieved successfully', 'data': response})
         return request.make_response(data, HEADERS, status=200)
 
-    @http.route('/api/user/signup', auth='public', type='http', method=['POST'], csrf=False)
+    @http.route('/api/user/signup', auth='public', type='http', methods=['POST'], csrf=False)
     def user_sign_up(self, **kw):
         logging.info(f'RadiusManagerAPI::user_sign_up:: ')
 
@@ -114,7 +114,6 @@ class RadiusManagerAPI(http.Controller):
             [('username', '=', mac_address)], limit=1)
 
         logging.info(f'RadiusManagerAPI::user_sign_up:: hotspot_user --> {hotspot_user}')
-
 
         if not hotspot_user:
             partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
