@@ -45,7 +45,7 @@ class HotspotUser(models.Model):
                         f"HotspotUser::clear_user_profile:: Failed to create user: {error_msg}")
                 else:
                     logging.info(
-                        f"HotspotUser::clear_user_profile:: Profile limitation deactivated due to matching uptime.")
+                        f"HotspotUser::clear_user_profile:: Profile Cleared Successfully")
         finally:
             router.disconnect()
             logging.info("HotspotUser::clear_user_profile Disconnected from MikroTik.")

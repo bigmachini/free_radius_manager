@@ -11,12 +11,15 @@ HEADERS = [('Content-Type', 'application/json'),
 
 
 class RadiusManagerAPI(http.Controller):
-    @http.route('/api/user/profile/clear/<mac>', auth='public', type='http')
+    @http.route('/api/user/profile/clear', auth='public', type='http', method=['POST'])
     def clear_user_profile(self, mac, **kw):
-        logging.info(f'RadiusManagerAPI::clear_user_profile:: mac --> {mac}')
+        logging.info(f'RadiusManagerAPI::clear_user_profile::')
+
+        data = json.loads(request.httprequest.data)
+        logging.info(f'RadiusManagerAPI::clear_user_profile:: data --> {data}')
 
         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
-            [('username', '=', mac)], limit=1)
+            [('username', '=', data['mac'])], limit=1)
         if not hotspot_user:
             data = {'status': False, 'message': 'User not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)
