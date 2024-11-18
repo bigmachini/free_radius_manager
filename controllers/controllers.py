@@ -6,6 +6,7 @@ from odoo import http
 from odoo.http import request
 import logging
 
+from odoo.tools import partition
 from .utils import validate_mac_address
 
 HEADERS = [('Content-Type', 'application/json'),
@@ -94,11 +95,16 @@ class RadiusManagerAPI(http.Controller):
         logging.info(f'RadiusManagerAPI::user_sign_up:: data --> {data}')
 
         if not hotspot_user:
+            partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
+            if not partner:
+                data = {'status': False, 'message': 'Partner not found', 'data': {}}
+                return request.make_response(json.dumps(data), HEADERS, status=404)
+
             hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
                 "username": mac_address,
                 "password": mac_address,
                 "phone": data['phone_number'],
-                "partner_id": data['partner_id'],
+                "partner_id": partner.id,
                 "name": mac_address
             })
 
