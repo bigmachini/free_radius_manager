@@ -27,9 +27,8 @@ class HotspotUser(models.Model):
     hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
                                                string="User Sessions")
 
-
     def cron_check_and_deactivate_profile_limitation(self):
-        users_with_profiles =  self.search([('user_profile_limitation_ids', '!=', False)])
+        users_with_profiles = self.search([('user_profile_limitation_ids', '!=', False)])
         for user in users_with_profiles:
             user.check_and_deactivate_profile_limitation()
 
@@ -66,8 +65,7 @@ class HotspotUser(models.Model):
 
         try:
             router.connect()
-            response = router.create_user(username=self.username, password=self.password,
-                                          customer=self.partner_id.kredoh_username)
+            response = router.create_user(username=self.username, customer=self.partner_id.kredoh_username)
             if len(response) == 2:
                 error_msg = response[0]['']
                 raise ValidationError(f"Failed to create user: {error_msg}")

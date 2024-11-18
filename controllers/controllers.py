@@ -99,7 +99,6 @@ class RadiusManagerAPI(http.Controller):
 
             hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
                 "username": mac_address,
-                "password": mac_address,
                 "phone": data['phone_number'],
                 "partner_id": partner.id,
                 "name": mac_address

@@ -17,7 +17,7 @@ class UserManager(MikroTik):
     shared-users=4
     """
 
-    def create_user(self, username, password, customer, shared_users=None):
+    def create_user(self, username, customer, shared_users=None):
         """
         Create a new user in User Manager.
 
@@ -29,14 +29,11 @@ class UserManager(MikroTik):
         """
         if not username:
             raise ValueError("Username is required to create a user.")
-        if not password:
-            raise ValueError("Password is required to create a user.")
         if not customer:
             raise ValueError("Customer is required to create a user.")
 
         params = {
             "username": username,
-            "password": password,
             "customer": customer,
             "disabled": "no",
         }
