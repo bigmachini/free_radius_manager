@@ -36,7 +36,8 @@ class AssignUserProfileWizard(models.TransientModel):
 
         profile = self.env['radius_manager.user_profile_limitation'].search(
             [('hotspot_user_id', '=', self.hotspot_user_id.id),
-             ('hotspot_profile_limitation_id', '=', self.hotspot_profile_limitation_id.id)], limit=1)
+             ('hotspot_profile_limitation_id', '=', self.hotspot_profile_limitation_id.id),
+             ('is_activated', '=', True)], limit=1)
 
         if profile:
             raise ValidationError(f"Profile already assigned")
@@ -44,7 +45,7 @@ class AssignUserProfileWizard(models.TransientModel):
         user_profile_limitation = self.env['radius_manager.user_profile_limitation'].create([{
             'hotspot_user_id': self.hotspot_user_id.id,
             'hotspot_profile_limitation_id': self.hotspot_profile_limitation_id.id,
-            'partner_id' : self.hotspot_user_id.partner_id.id,
+            'partner_id': self.hotspot_user_id.partner_id.id,
             'is_activated': True
         }])
 
