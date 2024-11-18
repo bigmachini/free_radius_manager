@@ -29,6 +29,7 @@ class UserManagerLimitations(MikroTik):
         """
 
         params = {"name": name,
+                  "uptime-limit": 0,
                   "owner": owner,
                   # "rate-limit-burst-limit-rx": 0,
                   # "rate-limit-burst-limit-tx": 0,
@@ -93,6 +94,7 @@ class UserManagerLimitations(MikroTik):
         """
         params = {".id": limitation_id,
                   "name": name,
+                  "uptime-limit": 0,
                   "owner": owner,
                   "rate-limit-rx": rate_limit_rx.upper(),
                   "rate-limit-tx": rate_limit_tx.upper(),
