@@ -50,7 +50,7 @@
                     <notebook>
                         <page string="Profiles" name="user_profiles">
                             <field name="user_profile_limitation_ids">
-                                <list string="Profiles">
+                                <list string="Profiles" default_order="id desc">
                                     <field name="hotspot_profile_limitation_id"/>
                                     <field name="download_speed"/>
                                     <field name="upload_speed"/>
@@ -61,7 +61,7 @@
                         </page>
                         <page string="Sessions" name="user_session">
                             <field name="hotspot_user_session_ids">
-                                <list string="Sessions">
+                                <list string="Sessions" default_order="id desc">
                                     <field name="calling_station_id"/>
                                     <field name="user_ip"/>
                                     <field name="uptime"/>
