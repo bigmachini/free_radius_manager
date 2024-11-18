@@ -33,7 +33,7 @@ class HotspotUser(models.Model):
             user.check_and_deactivate_profile_limitation()
 
     def check_and_deactivate_profile_limitation(self):
-        logging.info(f"HotspotUser::check_and_deactivate_profile_limitation")
+        logging.info(f"HotspotUser::check_and_deactivate_profile_limitation::")
 
         active_user_profile_limitation = self.user_profile_limitation_ids.filtered(lambda p: p.is_activated)
         if not active_user_profile_limitation:
