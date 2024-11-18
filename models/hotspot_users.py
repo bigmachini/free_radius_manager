@@ -32,6 +32,24 @@ class HotspotUser(models.Model):
         for user in users_with_profiles:
             user.check_and_deactivate_profile_limitation()
 
+    def clear_user_profile(self):
+        logging.error(f"HotspotUser::clear_user_profile:: ")
+        try:
+            router.connect()
+            user = router.get_user_by_identifier(self.username)
+            if user:
+                response = router.clear_user_profile(number=user.get("number"))
+                if len(response) == 2:
+                    error_msg = response[0]['']
+                    logging.error(
+                        f"HotspotUser::clear_user_profile:: Failed to create user: {error_msg}")
+                else:
+                    logging.info(
+                        f"HotspotUser::clear_user_profile:: Profile limitation deactivated due to matching uptime.")
+        finally:
+            router.disconnect()
+            logging.info("HotspotUser::clear_user_profile Disconnected from MikroTik.")
+
     def check_and_deactivate_profile_limitation(self):
         logging.info(f"HotspotUser::check_and_deactivate_profile_limitation::")
 
