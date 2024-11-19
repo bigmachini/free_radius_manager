@@ -8,6 +8,10 @@ access_radius_manager.user_profile_limitation,radius_manager.user_profile_limita
 access_radius_manager.assign_user_profile_wizard,radius_manager.assign_user_profile_wizard,model_radius_manager_assign_user_profile_wizard,base.group_user,1,1,1,1
 access_radius_manager.hotspot_router,radius_manager.hotspot_router,model_radius_manager_hotspot_router,base.group_user,1,1,1,1
 access_radius_manager.kopokopo,radius_manager.kopokopo,model_radius_manager_kopokopo,base.group_user,1,1,1,1
+access_radius_manager.kopokopo_access_tokens,radius_manager.kopokopo_access_tokens,model_radius_manager_kopokopo_access_tokens,base.group_user,1,1,1,1
+access_radius_manager.kopokopo_webhook,radius_manager.kopokopo_webhook,model_radius_manager_kopokopo_webhook,base.group_user,1,1,1,1
+
+
 
 
 

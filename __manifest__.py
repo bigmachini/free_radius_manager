@@ -18,6 +18,8 @@
         'views/user_profile_limitation.xml',
         'views/hotspot_router.xml',
         'views/kopokopo.xml',
+        'views/kopokopo_webhooks.xml',
+
         'data/cron_jobs.xml',
     ],
     'installable': True,

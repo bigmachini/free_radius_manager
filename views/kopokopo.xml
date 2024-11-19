@@ -8,16 +8,29 @@
                     <group>
                         <field name="client_id"/>
                         <field name="client_secret"/>
+                        <field name="api_key"/>
                         <field name="base_url"/>
+                        <field name="webhook_subscription_url"/>
                     </group>
                     <notebook>
-                        <page string="Access Tokens">
+                        <page string="Access Tokens" name="access_tokens">
                             <field name="access_token_ids">
                                 <list string="Access Tokens">
                                     <field name="access_token"/>
                                     <field name="token_type"/>
                                     <field name="expires_in"/>
                                     <field name="created_at"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Webhooks" name="webhooks">
+                            <field name="webhook_ids">
+                                <list string="Webhooks">
+                                    <field name="event_type"/>
+                                    <field name="webhook_url"/>
+                                    <field name="scope"/>
+                                    <field name="scope_value"/>
+                                    <field name="active"/>
                                 </list>
                             </field>
                         </page>

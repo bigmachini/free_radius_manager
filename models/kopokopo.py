@@ -10,8 +10,11 @@ class Kopokopo(models.Model):
     client_id = fields.Char(string='Client ID', required=True)
     client_secret = fields.Char(string='Client Secret', required=True)
     base_url = fields.Char(string='Base URL', required=True)
+    webhook_subscription_url = fields.Char(string='Webhook Subscription URL')
+    api_key = fields.Char(string='API Key', required=True)
     access_token_ids = fields.One2many('radius_manager.kopokopo_access_tokens', 'kopo_kopo_id',
                                        string="Access Tokens")
+    webhook_ids = fields.One2many('radius_manager.kopokopo_webhook', 'kopo_kopo_id', string="Webhooks")
 
     def get_access_token(self):
         latest_token = self.access_token_ids.sorted(key=lambda t: t.created_at, reverse=True)[:1]
