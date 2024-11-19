@@ -3,7 +3,7 @@
         <field name="name">buygoods.transaction.received.list</field>
         <field name="model">radius_manager.buygoods_transaction_received</field>
         <field name="arch" type="xml">
-            <list string="Buygoods Transactions Received" create="false" edit="false">
+            <list string="Buygoods Transactions Received" create="false" edit="false" default_order="id desc">
                 <field name="topic"/>
                 <field name="transaction_id"/>
                 <field name="created_at"/>
