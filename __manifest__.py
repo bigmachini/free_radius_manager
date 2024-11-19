@@ -21,6 +21,7 @@
         'views/kopokopo_webhooks.xml',
         'views/buygoods_transaction_received.xml',
         'views/incoming_payments.xml',
+        'views/stk_request.xml',
         'data/cron_jobs.xml',
     ],
     'installable': True,

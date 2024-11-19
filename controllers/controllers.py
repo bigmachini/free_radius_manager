@@ -4,7 +4,7 @@ import logging
 
 from odoo import http
 from odoo.http import request
-from .utils import validate_mac_address
+from .utils import validate_mac_address, validate_and_format_phone_number
 
 HEADERS = [('Content-Type', 'application/json'),
            ('Cache-Control', 'no-store')]
@@ -105,6 +105,16 @@ class RadiusManagerAPI(http.Controller):
         data = json.loads(request.httprequest.data)
         logging.info(f'RadiusManagerAPI::user_subscribe:: data --> {data}')
 
+        phone_number = data.get('phone_number', None)
+        phone_number = validate_and_format_phone_number(phone_number, region='KE')
+        if not phone_number:
+            response = {
+                'status': False,
+                'message': 'Invalid phone number format',
+                'data': {}
+            }
+            return request.make_response(json.dumps(response), HEADERS, status=400)
+
         # validate missing fields
         missing_fields = [field for field in ['mac_address', 'phone_number', 'package_id', 'partner_id'] if
                           field not in data]
@@ -137,7 +147,7 @@ class RadiusManagerAPI(http.Controller):
 
             hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
                 "username": mac_address,
-                "phone": data['phone_number'],
+                "phone": phone_number,
                 "partner_id": partner.id,
                 "name": mac_address
             })
@@ -152,7 +162,6 @@ class RadiusManagerAPI(http.Controller):
             data = {'status': False, 'message': 'Package not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)
 
-
         vals = {
             'hotspot_profile_limitation_id': profile_limitation.id,
             'hotspot_user_id': hotspot_user.id,
@@ -166,27 +175,30 @@ class RadiusManagerAPI(http.Controller):
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
 
+        till = request.env['safaricom_stk.till'].sudo().search([('partner_id', '=', hotspot_user.partner_id.id)],
+                                                               limit=1)
+        if not till:
+            response = {
+                'status': False,
+                'message': 'Till not found',
+                'data': {}
+            }
+            return request.make_response(json.dumps(response), HEADERS, status=404)
+
         vals = {
             'user_profile_limitation_id': user_profile_limitation.id,
             'hotspot_user_id': hotspot_user.id,
-            'amount': profile_limitation.hotspot_profile_id.price
+            'amount': profile_limitation.hotspot_profile_id.price,
+            'phone_number': phone_number,
+            'till_id': till.id
         }
-        incoming_payment = request.env['radius_manager.incoming_payments'].sudo().create([vals])
 
-
-
-        # wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
-        #     'hotspot_profile_limitation_id': profile_limitation.id,
-        #     'hotspot_user_id': hotspot_user.id
-        # })
-        # wizard.assign_profile()
+        stk_request = request.env['safaricom_stk.stk_request'].sudo().create([vals])
+        status_code = stk_request.process_stk_push()
 
         response = {
             'status': True,
-            'message': 'User signed in successfully',
-            'data': {
-                'user_id': hotspot_user.id,
-                'username': hotspot_user.username
-            }
+            'message': '',
+            'data': {}
         }
-        return request.make_response(json.dumps(response), HEADERS, status=200)
+        return request.make_response(json.dumps(response), HEADERS, status=status_code)

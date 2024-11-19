@@ -1,0 +1,27 @@
+<odoo>
+    <!-- Inherit Form View -->
+    <record id="view_stk_request_form_inherit" model="ir.ui.view">
+        <field name="name">stk.request.form.inherit</field>
+        <field name="model">safaricom_stk.stk_request</field>
+        <field name="inherit_id" ref="safaricom_stk.view_stk_request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='till_id']" position="after">
+                <field name="hotspot_user_id"/>
+                <field name="user_profile_limitation_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit List View -->
+    <record id="view_stk_request_list_inherit" model="ir.ui.view">
+        <field name="name">stk.request.list.inherit</field>
+        <field name="model">safaricom_stk.stk_request</field>
+        <field name="inherit_id" ref="safaricom_stk.view_stk_request_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='till_id']" position="after">
+                <field name="hotspot_user_id"/>
+                <field name="user_profile_limitation_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
