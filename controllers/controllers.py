@@ -99,12 +99,12 @@ class RadiusManagerAPI(http.Controller):
         data = json.dumps({'status': True, 'message': 'Packages retrieved successfully', 'data': response})
         return request.make_response(data, HEADERS, status=200)
 
-    @http.route('/api/user/signup', auth='public', type='http', methods=['POST'], csrf=False)
-    def user_sign_up(self, **kw):
-        logging.info(f'RadiusManagerAPI::user_sign_up:: ')
+    @http.route('/api/user/subscribe', auth='public', type='http', methods=['POST'], csrf=False)
+    def user_subscribe(self, **kw):
+        logging.info(f'RadiusManagerAPI::user_subscribe:: ')
 
         data = json.loads(request.httprequest.data)
-        logging.info(f'RadiusManagerAPI::user_sign_up:: data --> {data}')
+        logging.info(f'RadiusManagerAPI::user_subscribe:: data --> {data}')
 
         # validate missing fields
         missing_fields = [field for field in ['mac_address', 'phone_number', 'package_id', 'partner_id'] if
@@ -128,7 +128,7 @@ class RadiusManagerAPI(http.Controller):
         hotspot_user = request.env['radius_manager.hotspot_user'].sudo().search(
             [('username', '=', mac_address)], limit=1)
 
-        logging.info(f'RadiusManagerAPI::user_sign_up:: hotspot_user --> {hotspot_user}')
+        logging.info(f'RadiusManagerAPI::user_subscribe:: hotspot_user --> {hotspot_user}')
 
         if not hotspot_user:
             partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
@@ -147,7 +147,7 @@ class RadiusManagerAPI(http.Controller):
 
         profile_limitation = request.env['radius_manager.hotspot_profile_limitation'].sudo().search(
             [('id', '=', data["package_id"])], limit=1)
-        logging.info(f'RadiusManagerAPI::user_sign_up:: profile_limitation --> {profile_limitation}')
+        logging.info(f'RadiusManagerAPI::user_subscribe:: profile_limitation --> {profile_limitation}')
 
         if not profile_limitation:
             data = {'status': False, 'message': 'Package not found', 'data': {}}
