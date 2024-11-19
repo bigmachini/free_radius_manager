@@ -21,9 +21,11 @@ class KopokopoWebhook(models.Model):
     event_type = fields.Selection(EVENT_TYPES, string='Event Type', required=True)
     webhook_url = fields.Char(string='Webhook URL', required=True)
     scope = fields.Selection(SCOPE, string='Scope', required=True)
-    scope_value = fields.Char(string='Scope Value', required='scope == till')
+    scope_value = fields.Char(string='Scope Value')
     kopo_kopo_id = fields.Many2one('radius_manager.kopokopo', string='Kopo Kopo', required=True)
     active = fields.Boolean(string='Active', default=True)
+    buygoods_transaction_received_ids = fields.One2many('radius_manager.buygoods_transaction_received',
+                                                        'kopokopo_webhook_id', string='Buygoods Transaction Received')
 
     def create_webhook(self, vals):
         kopo_kopo = self.env['radius_manager.kopokopo'].browse(int(vals.get('kopo_kopo_id')))
@@ -49,11 +51,6 @@ class KopokopoWebhook(models.Model):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         return response.json()
-
-    @api.model
-    def create(self, vals):
-        self.create_webhook(vals)
-        return super(KopokopoWebhook, self).create(vals)
 
     @staticmethod
     def validate_kopokopo_webhook(request_body, kopokopo_signature, api_key):

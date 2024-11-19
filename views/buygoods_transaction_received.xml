@@ -1,0 +1,73 @@
+<odoo>
+    <record id="view_buygoods_transaction_received_list" model="ir.ui.view">
+        <field name="name">buygoods.transaction.received.list</field>
+        <field name="model">radius_manager.buygoods_transaction_received</field>
+        <field name="arch" type="xml">
+            <list string="Buygoods Transactions Received" create="false" edit="false">
+                <field name="topic"/>
+                <field name="transaction_id"/>
+                <field name="created_at"/>
+                <field name="event_type"/>
+                <field name="resource_id"/>
+                <field name="amount"/>
+                <field name="status"/>
+                <field name="system"/>
+                <field name="currency"/>
+                <field name="reference"/>
+                <field name="till_number"/>
+                <field name="sender_phone_number"/>
+                <field name="hashed_sender_phone"/>
+                <field name="origination_time"/>
+                <field name="sender_last_name"/>
+                <field name="sender_first_name"/>
+                <field name="sender_middle_name"/>
+                <field name="self_link"/>
+                <field name="resource_link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_buygoods_transaction_received_form" model="ir.ui.view">
+        <field name="name">buygoods.transaction.received.form</field>
+        <field name="model">radius_manager.buygoods_transaction_received</field>
+        <field name="arch" type="xml">
+            <form string="Buygoods Transaction Received" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="topic"/>
+                        <field name="transaction_id"/>
+                        <field name="created_at"/>
+                        <field name="event_type"/>
+                        <field name="resource_id"/>
+                        <field name="amount"/>
+                        <field name="status"/>
+                        <field name="system"/>
+                        <field name="currency"/>
+                        <field name="reference"/>
+                        <field name="till_number"/>
+                        <field name="sender_phone_number"/>
+                        <field name="hashed_sender_phone"/>
+                        <field name="origination_time"/>
+                        <field name="sender_last_name"/>
+                        <field name="sender_first_name"/>
+                        <field name="sender_middle_name"/>
+                        <field name="self_link"/>
+                        <field name="resource_link"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_buygoods_transaction_received" model="ir.actions.act_window">
+        <field name="name">Kopokopo Webhooks</field>
+        <field name="res_model">radius_manager.buygoods_transaction_received</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_buygoods_transaction_received"
+              name="Buy Goods Transaction"
+              parent="menu_kopokopo_main"
+              action="action_buygoods_transaction_received"/>
+</odoo>

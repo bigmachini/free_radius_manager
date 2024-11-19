@@ -10,3 +10,4 @@ from . import hotspot_router
 from . import kopokopo
 from . import kopokopo_access_tokens
 from . import kopokopo_webhooks
+from . import buygoods_transaction_received

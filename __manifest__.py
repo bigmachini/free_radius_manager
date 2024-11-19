@@ -19,6 +19,7 @@
         'views/hotspot_router.xml',
         'views/kopokopo.xml',
         'views/kopokopo_webhooks.xml',
+        'views/buygoods_transaction_received.xml',
 
         'data/cron_jobs.xml',
     ],

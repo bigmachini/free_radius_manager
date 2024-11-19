@@ -13,6 +13,34 @@
                         <field name="kopo_kopo_id"/>
                         <field name="active"/>
                     </group>
+                    <notebook>
+                        <page string="Buy Goods Transactions" name="bug_goods_transactions">
+                            <field name="buygoods_transaction_received_ids">
+                                <list string="Buy Goods Transactions" create="false" edit="false">
+                                    <field name="topic"/>
+                                    <field name="transaction_id"/>
+                                    <field name="created_at"/>
+                                    <field name="event_type"/>
+                                    <field name="resource_id"/>
+                                    <field name="amount"/>
+                                    <field name="status"/>
+                                    <field name="system"/>
+                                    <field name="currency"/>
+                                    <field name="reference"/>
+                                    <field name="till_number"/>
+                                    <field name="sender_phone_number"/>
+                                    <field name="hashed_sender_phone"/>
+                                    <field name="origination_time"/>
+                                    <field name="sender_last_name"/>
+                                    <field name="sender_first_name"/>
+                                    <field name="sender_middle_name"/>
+                                    <field name="self_link"/>
+                                    <field name="resource_link"/>
+                                </list>
+                            </field>
+                        </page>
+
+                    </notebook>
                 </sheet>
             </form>
         </field>

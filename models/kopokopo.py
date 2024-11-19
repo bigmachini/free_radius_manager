@@ -15,6 +15,8 @@ class Kopokopo(models.Model):
     access_token_ids = fields.One2many('radius_manager.kopokopo_access_tokens', 'kopo_kopo_id',
                                        string="Access Tokens")
     webhook_ids = fields.One2many('radius_manager.kopokopo_webhook', 'kopo_kopo_id', string="Webhooks")
+    buygoods_transaction_received_ids = fields.One2many('radius_manager.buygoods_transaction_received', 'kopokopo_id',
+                                                        string="Buygoods Transaction Received")
 
     def get_access_token(self):
         latest_token = self.access_token_ids.sorted(key=lambda t: t.created_at, reverse=True)[:1]
