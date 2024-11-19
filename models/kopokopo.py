@@ -10,7 +10,9 @@ class Kopokopo(models.Model):
     client_id = fields.Char(string='Client ID', required=True)
     client_secret = fields.Char(string='Client Secret', required=True)
     base_url = fields.Char(string='Base URL', required=True)
+    till_number = fields.Char(string='Till Number')
     webhook_subscription_url = fields.Char(string='Webhook Subscription URL')
+    incoming_payments_callback_url = fields.Char(string='Incoming Payments Callback URL')
     api_key = fields.Char(string='API Key', required=True)
     access_token_ids = fields.One2many('radius_manager.kopokopo_access_tokens', 'kopo_kopo_id',
                                        string="Access Tokens")

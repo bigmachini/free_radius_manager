@@ -9,7 +9,9 @@
                         <field name="client_id"/>
                         <field name="client_secret"/>
                         <field name="api_key"/>
+                        <field name="till_number"/>
                         <field name="base_url"/>
+                        <field name="incoming_payments_callback_url"/>
                         <field name="webhook_subscription_url"/>
                     </group>
                     <notebook>
@@ -65,18 +67,6 @@
         </field>
     </record>
 
-    <record id="view_kopokopo_access_tokens_list" model="ir.ui.view">
-        <field name="name">kopokopo.access.tokens.list</field>
-        <field name="model">radius_manager.kopokopo_access_tokens</field>
-        <field name="arch" type="xml">
-            <list string="Access Tokens" create="false" edit="false" default_order="id desc">
-                <field name="access_token"/>
-                <field name="token_type"/>
-                <field name="expires_in"/>
-                <field name="created_at"/>
-            </list>
-        </field>
-    </record>
 
     <record id="action_kopokopo" model="ir.actions.act_window">
         <field name="name">Kopokopo</field>
