@@ -1,0 +1,57 @@
+<odoo>
+    <record id="view_kopokopo_form" model="ir.ui.view">
+        <field name="name">kopokopo.form</field>
+        <field name="model">radius_manager.kopokopo</field>
+        <field name="arch" type="xml">
+            <form string="Kopokopo">
+                <sheet>
+                    <group>
+                        <field name="client_id"/>
+                        <field name="client_secret"/>
+                        <field name="base_url"/>
+                    </group>
+                    <notebook>
+                        <page string="Access Tokens">
+                            <field name="access_token_ids">
+                                <list string="Access Tokens">
+                                    <field name="access_token"/>
+                                    <field name="token_type"/>
+                                    <field name="expires_in"/>
+                                    <field name="created_at"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kopokopo_access_tokens_list" model="ir.ui.view">
+        <field name="name">kopokopo.access.tokens.list</field>
+        <field name="model">radius_manager.kopokopo_access_tokens</field>
+        <field name="arch" type="xml">
+            <list string="Access Tokens" create="false" edit="false" default_order="id desc">
+                <field name="access_token"/>
+                <field name="token_type"/>
+                <field name="expires_in"/>
+                <field name="created_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_kopokopo" model="ir.actions.act_window">
+        <field name="name">Kopokopo</field>
+        <field name="res_model">radius_manager.kopokopo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_kopokopo_main"
+              name="KOPOKOPO"
+              parent="menu_hotspot_home"/>
+
+    <menuitem id="menu_kopokopo"
+              name="Account"
+              parent="menu_kopokopo_main"
+              action="action_kopokopo"/>
+</odoo>

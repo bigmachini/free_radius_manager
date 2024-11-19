@@ -4,7 +4,7 @@
     'summary': 'Manage RADIUS attributes and accounting records',
     'category': 'Tools',
     'author': 'Bigmachini Enterprises LTD',
-    'depends': ['base','contacts'],
+    'depends': ['base', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
         'security/radius_manager_security.xml',
@@ -17,6 +17,7 @@
         'views/hotspot_profile_limitation.xml',
         'views/user_profile_limitation.xml',
         'views/hotspot_router.xml',
+        'views/kopokopo.xml',
         'data/cron_jobs.xml',
     ],
     'installable': True,
