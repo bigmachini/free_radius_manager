@@ -93,7 +93,6 @@ class RadiusManagerAPI(http.Controller):
                 'id': profile_limitation.id,
                 'name': profile_limitation.name,
                 'uptime': profile_limitation.hotspot_limitation_id.uptime_limit,
-
             })
 
         data = json.dumps({'status': True, 'message': 'Packages retrieved successfully', 'data': response})
@@ -153,11 +152,34 @@ class RadiusManagerAPI(http.Controller):
             data = {'status': False, 'message': 'Package not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)
 
-        wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
+
+        vals = {
             'hotspot_profile_limitation_id': profile_limitation.id,
-            'hotspot_user_id': hotspot_user.id
-        })
-        wizard.assign_profile()
+            'hotspot_user_id': hotspot_user.id,
+        }
+        user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().create([vals])
+        if not user_profile_limitation:
+            response = {
+                'status': False,
+                'message': 'Failed to subscribe user to package',
+                'data': {}
+            }
+            return request.make_response(json.dumps(response), HEADERS, status=400)
+
+        vals = {
+            'user_profile_limitation_id': user_profile_limitation.id,
+            'hotspot_user_id': hotspot_user.id,
+            'amount': profile_limitation.hotspot_profile_id.price
+        }
+        incoming_payment = request.env['radius_manager.incoming_payments'].sudo().create([vals])
+
+
+
+        # wizard = request.env['radius_manager.assign_user_profile_wizard'].sudo().create({
+        #     'hotspot_profile_limitation_id': profile_limitation.id,
+        #     'hotspot_user_id': hotspot_user.id
+        # })
+        # wizard.assign_profile()
 
         response = {
             'status': True,

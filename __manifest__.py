@@ -4,7 +4,7 @@
     'summary': 'Manage RADIUS attributes and accounting records',
     'category': 'Tools',
     'author': 'Bigmachini Enterprises LTD',
-    'depends': ['base', 'contacts'],
+    'depends': ['base', 'contacts', 'mail', 'safaricom_stk'],
     'data': [
         'security/ir.model.access.csv',
         'security/radius_manager_security.xml',

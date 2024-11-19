@@ -73,6 +73,16 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Incoming Payments" name="incoming_payments">
+                            <field name="incoming_payment_ids">
+                                <list string="STK Payments" create="false" edit="false" default_order="id desc">
+                                    <field name="uuid"/>
+                                    <field name="amount"/>
+                                    <field name="payment_status"/>
+                                    <field name="kopokopo_id"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

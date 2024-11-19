@@ -26,6 +26,8 @@ class HotspotUser(models.Model):
                                                   string="User Profile Limitations")
     hotspot_user_session_ids = fields.One2many('radius_manager.hotspot_user_session', 'hotspot_user_id',
                                                string="User Sessions")
+    incoming_payment_ids = fields.One2many('radius_manager.incoming_payments', 'hotspot_user_id',
+                                           string="Incoming Payments")
 
     def cron_check_and_deactivate_profile_limitation(self):
         users_with_profiles = self.search([('user_profile_limitation_ids', '!=', False)])
