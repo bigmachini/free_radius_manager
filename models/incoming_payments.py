@@ -21,7 +21,7 @@ class IncomingPayments(models.Model):
     amount = fields.Float(string='Amount', readonly=True)
     hotspot_user_id = fields.Many2one('radius_manager.hotspot_user', string='Hotspot User', readonly=True)
     uuid = fields.Char(string='UUID', readonly=True, default=lambda self: str(uuid.uuid4()))
-    payment_status = fields.Selection(PAYMENT_STATUS, string='Payment Status', default='pending', readonly=True)
+    payment_status = fields.Selection(PAYMENT_STATUS, string='Payment Status', readonly=True)
     kopokopo_id = fields.Many2one('radius_manager.kopokopo', string='Kopokopo', readonly=True)
     incoming_payment_callback_ids = fields.One2many('radius_manager.incoming_payment_callback', 'incoming_payment_id',
                                                     string='Incoming Payment Callbacks')
@@ -60,4 +60,8 @@ class IncomingPayments(models.Model):
 
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
+        if response.status_code == 201:
+            self.payment_status = 'pending'
+        else:
+            self.payment_status = 'failed'
         return response.json()
