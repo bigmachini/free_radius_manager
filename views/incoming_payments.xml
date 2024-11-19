@@ -1,0 +1,62 @@
+<odoo>
+    <record id="view_incoming_payments_form" model="ir.ui.view">
+        <field name="name">incoming.payments.form</field>
+        <field name="model">radius_manager.incoming_payments</field>
+        <field name="arch" type="xml">
+            <form string="STK Payments" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <field name="user_profile_limitation_id"/>
+                        <field name="amount"/>
+                        <field name="hotspot_user_id"/>
+                        <field name="uuid"/>
+                        <field name="payment_status"/>
+                        <field name="kopokopo_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Callbacks">
+                            <field name="incoming_payment_callback_ids">
+                                <list string="Callbacks">
+                                    <field name="data_id"/>
+                                    <field name="status"/>
+                                    <field name="initiation_time"/>
+                                    <field name="amount"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_incoming_payments_tree" model="ir.ui.view">
+        <field name="name">incoming.payments.tree</field>
+        <field name="model">radius_manager.incoming_payments</field>
+        <field name="arch" type="xml">
+            <list string="STK Payments" create="false" edit="false" default_order="id desc">
+                <field name="uuid"/>
+                <field name="amount"/>
+                <field name="payment_status"/>
+                <field name="kopokopo_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_incoming_payments" model="ir.actions.act_window">
+        <field name="name">Incoming Payments</field>
+        <field name="res_model">radius_manager.incoming_payments</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_incoming_payments"
+              name="Payments"
+              parent="menu_kopokopo_main"
+              sequence="10"/>
+
+    <menuitem id="menu_action_incoming_payments"
+              name="STK Payments"
+              parent="menu_incoming_payments"
+              action="action_incoming_payments"
+              sequence="10"/>
+</odoo>
