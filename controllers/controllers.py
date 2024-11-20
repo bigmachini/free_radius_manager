@@ -5,13 +5,14 @@ import logging
 from odoo import http
 from odoo.http import request
 from .utils import validate_mac_address, validate_and_format_phone_number
+from datetime import datetime
 
 HEADERS = [('Content-Type', 'application/json'),
            ('Cache-Control', 'no-store')]
 
 
 class RadiusManagerAPI(http.Controller):
-    @http.route('/api/user/<mac>', auth='public', type='http', csrf=False)
+    @http.route('/api/user/<mac>', auth='public', type='http')
     def check_for_user(self, mac, **kw):
         logging.info(f'RadiusManagerAPI::check_for_user::  mac --> {mac}')
 
@@ -21,7 +22,22 @@ class RadiusManagerAPI(http.Controller):
             data = {'status': False, 'message': 'User not found', 'data': {}}
             return request.make_response(json.dumps(data), HEADERS, status=404)
 
-        hotspot_user.clear_user_profile()
+        user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().search(
+            [('hotspot_user_id', '=', hotspot_user.id), ('is_activated', '=', True)], limit=1, order='id desc')
+
+        if not user_profile_limitation:
+            data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=400)
+
+        if user_profile_limitation.end_time:
+            if user_profile_limitation.end_time < datetime.now():
+                user_profile_limitation.write({'is_activated': False})
+                data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
+                return request.make_response(json.dumps(data), HEADERS, status=400)
+        else:
+            user_profile_limitation.write({'is_activated': False})
+            data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=400)
 
         data = {'status': True, 'message': '', 'data': {}}
         return request.make_response(json.dumps(data), HEADERS, status=200)
