@@ -6,11 +6,17 @@
             <form string="User Profile Limitation" create="false">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="hotspot_user_id"/>
-                        <field name="hotspot_profile_limitation_id"/>
-                        <field name="is_activated"/>
-                        <field name="partner_id" required="True"/>
+                        <group string="Profile Info">
+                            <field name="hotspot_user_id"/>
+                            <field name="hotspot_profile_limitation_id"/>
+                            <field name="partner_id" required="True"/>
+                            <field name="time_left"/>
+                        </group>
+                        <group string="Profile Status">
+                            <field name="is_activated"/>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
@@ -26,6 +32,7 @@
                 <field name="hotspot_profile_limitation_id"/>
                 <field name="partner_id" required="True"/>
                 <field name="is_activated"/>
+                <field name="time_left"/>
             </list>
         </field>
     </record>
