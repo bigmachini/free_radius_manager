@@ -5,9 +5,11 @@
         <field name="model">safaricom_stk.stk_request</field>
         <field name="inherit_id" ref="safaricom_stk.view_stk_request_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='till_id']" position="after">
-                <field name="hotspot_user_id"/>
-                <field name="user_profile_limitation_id"/>
+            <xpath expr="//group[@name='request_details']" position="after">
+                <group string="Package Details" name="package_details">
+                    <field name="hotspot_user_id"/>
+                    <field name="user_profile_limitation_id"/>
+                </group>
             </xpath>
         </field>
     </record>
