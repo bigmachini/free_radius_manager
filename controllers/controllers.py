@@ -141,6 +141,7 @@ class RadiusManagerAPI(http.Controller):
                 'data': {}
             }
             return request.make_response(json.dumps(response), HEADERS, status=400)
+
         if not validate_mac_address(data['mac_address']):
             response = {
                 'status': False,
