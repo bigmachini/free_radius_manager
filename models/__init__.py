@@ -14,3 +14,4 @@ from . import buygoods_transaction_received
 from . import incoming_payment_callback
 from . import incoming_payments
 from . import stk_request
+from . import stk_callback
