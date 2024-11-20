@@ -52,4 +52,5 @@ class UserProfileLimitation(models.Model):
         elif self.validity[-1].lower() == 'h':
             self.end_time = self.start_time + timedelta(hours=int(self.validity[:-1]))
 
-        # self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)
+
+        self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)
