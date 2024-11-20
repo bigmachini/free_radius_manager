@@ -155,12 +155,12 @@ class RadiusManagerAPI(http.Controller):
 
         logging.info(f'RadiusManagerAPI::user_subscribe:: hotspot_user --> {hotspot_user}')
 
-        if not hotspot_user:
-            partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
-            if not partner:
-                data = {'status': False, 'message': 'Partner not found', 'data': {}}
-                return request.make_response(json.dumps(data), HEADERS, status=404)
+        partner = request.env['res.partner'].sudo().browse(int(data['partner_id']))
+        if not partner:
+            data = {'status': False, 'message': 'Partner not found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=404)
 
+        if not hotspot_user:
             hotspot_user = request.env['radius_manager.hotspot_user'].sudo().create({
                 "username": mac_address,
                 "phone": phone_number,
@@ -181,6 +181,7 @@ class RadiusManagerAPI(http.Controller):
         vals = {
             'hotspot_profile_limitation_id': profile_limitation.id,
             'hotspot_user_id': hotspot_user.id,
+            'partner_id': partner.id,
         }
         user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().create([vals])
         if not user_profile_limitation:
