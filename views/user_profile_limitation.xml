@@ -13,7 +13,7 @@
                             <field name="time_left"/>
                         </group>
                         <group string="Profile Status">
-                            <field name="is_activated"/>
+                            <field name="profile_status"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
                         </group>
@@ -31,8 +31,8 @@
                 <field name="hotspot_user_id"/>
                 <field name="hotspot_profile_limitation_id"/>
                 <field name="partner_id" required="True"/>
-                <field name="is_activated"/>
                 <field name="time_left"/>
+                <field name="profile_status"/>
             </list>
         </field>
     </record>

@@ -2,6 +2,18 @@ from datetime import timedelta, datetime
 
 from odoo import models, fields, api
 
+PROFILE_STATUS = [
+    ('pending', 'Pending'),
+    ('canceled', 'Cancelled'),
+    ('active', 'Activated'),
+    ('expired', 'Expired'),
+]
+
+#pending - payment has been initiated but not yet completed
+#canceled - payment not processed
+#active - payment processed and profile activated
+#expired - profile expired
+
 
 class UserProfileLimitation(models.Model):
     _name = 'radius_manager.user_profile_limitation'
@@ -14,7 +26,6 @@ class UserProfileLimitation(models.Model):
     download_speed = fields.Char(related='hotspot_profile_limitation_id.hotspot_limitation_id.rate_limit_rx', )
     upload_speed = fields.Char(related='hotspot_profile_limitation_id.hotspot_limitation_id.rate_limit_tx', )
     validity = fields.Char(related='hotspot_profile_limitation_id.hotspot_profile_id.validity')
-    is_activated = fields.Boolean(string="Is Active", default=False)
     start_time = fields.Datetime(string="Start Time", readonly=True)
     end_time = fields.Datetime(string="Expiry Time", readonly=True)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True,
@@ -22,6 +33,7 @@ class UserProfileLimitation(models.Model):
                                  readonly=True,
                                  default=lambda self: self.env.user.partner_id.id)
 
+    profile_status = fields.Selection(PROFILE_STATUS, string="Profile Status", default='pending')
     time_left = fields.Char(string="Time Left", compute='_compute_time_left', store=True)
 
     @api.depends('end_time')
@@ -43,7 +55,6 @@ class UserProfileLimitation(models.Model):
 
     def activate_profile(self):
         self.ensure_one()
-        self.is_activated = True
         self.start_time = fields.Datetime.now()
         if self.validity[-1].lower() == 'd':
             self.end_time = self.start_time + timedelta(days=int(self.validity[:-1]))
@@ -51,6 +62,5 @@ class UserProfileLimitation(models.Model):
             self.end_time = self.start_time + timedelta(minutes=int(self.validity[:-1]))
         elif self.validity[-1].lower() == 'h':
             self.end_time = self.start_time + timedelta(hours=int(self.validity[:-1]))
-
 
         self.hotspot_user_id.assign_profile_user(self.hotspot_profile_limitation_id.hotspot_profile_id.name)

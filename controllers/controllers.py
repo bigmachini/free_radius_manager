@@ -23,24 +23,24 @@ class RadiusManagerAPI(http.Controller):
             return request.make_response(json.dumps(data), HEADERS, status=404)
 
         user_profile_limitation = request.env['radius_manager.user_profile_limitation'].sudo().search(
-            [('hotspot_user_id', '=', hotspot_user.id), ('is_activated', '=', True)], limit=1, order='id desc')
+            [('hotspot_user_id', '=', hotspot_user.id)], limit=1, order='id desc')
 
-        if not user_profile_limitation:
-            data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
-            return request.make_response(json.dumps(data), HEADERS, status=400)
-
-        if user_profile_limitation.end_time:
-            if user_profile_limitation.end_time < datetime.now():
-                user_profile_limitation.write({'is_activated': False})
-                data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
-                return request.make_response(json.dumps(data), HEADERS, status=400)
+        if user_profile_limitation.profile_status == 'pending':
+            data = {'status': True, 'message': 'Pending Profile Found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=200)
+        elif user_profile_limitation.profile_status == 'canceled':
+            data = {'status': False, 'message': 'Canceled Profile Found', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=200)
+        elif user_profile_limitation.profile_status == 'active':
+            if user_profile_limitation.end_time:
+                if user_profile_limitation.end_time < datetime.now():
+                    user_profile_limitation.write({'profile_status': 'expired'})
+                    data = {'status': False, 'message': 'Profile Expired', 'data': {}}
+                    return request.make_response(json.dumps(data), HEADERS, status=200)
         else:
-            user_profile_limitation.write({'is_activated': False})
-            data = {'status': False, 'message': 'No Active Profile Found', 'data': {}}
-            return request.make_response(json.dumps(data), HEADERS, status=400)
+            data = {'status': False, 'message': 'Profile Expired', 'data': {}}
+            return request.make_response(json.dumps(data), HEADERS, status=200)
 
-        data = {'status': True, 'message': '', 'data': {}}
-        return request.make_response(json.dumps(data), HEADERS, status=200)
 
     @http.route('/api/user/profile/clear', auth='public', type='http', methods=['POST'], csrf=False)
     def clear_user_profile(self, **kw):
