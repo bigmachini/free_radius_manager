@@ -112,7 +112,8 @@
 
     <menuitem id="menu_hotspot_home"
               name="Hotspot Manager"
-              groups="radius_manager.group_radius_manager_user,radius_manager.group_radius_manager_manager,radius_manager.group_radius_manager_admin"/>
+              groups="radius_manager.group_radius_manager_user,radius_manager.group_radius_manager_manager,radius_manager.group_radius_manager_admin"
+              sequence="10"/>
 
     <menuitem id="menu_users"
               name="Users"
