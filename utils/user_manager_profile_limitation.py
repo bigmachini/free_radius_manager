@@ -60,7 +60,7 @@ class UserManagerProfileLimitation(MikroTik):
         profiles = self.list_profile_limitation()
         for profile in profiles:
             if (profile.get("profile") == profile_name and profile.get("limitation") == limitation_name) or (
-                     profile.get(".id") == profile_limitation_id):
+                    profile.get(".id") == profile_limitation_id):
                 return profile
         return None
 

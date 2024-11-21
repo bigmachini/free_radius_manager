@@ -31,7 +31,7 @@ class UserManagerProfiles(MikroTik):
             "name": name,
             "name-for-users": name_for_users,
             "owner": owner,
-            'starts-at': 'logon',
+            'starts-at': 'now',
             "price": price,
             "validity": validity,
         }
@@ -65,7 +65,7 @@ class UserManagerProfiles(MikroTik):
             "name": name,
             "name-for-users": name_for_users,
             "owner": owner,
-            'starts-at': 'logon',
+            'starts-at': 'now',
             "price": price,
             "validity": validity,
         }
