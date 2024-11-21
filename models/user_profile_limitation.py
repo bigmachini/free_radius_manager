@@ -55,6 +55,7 @@ class UserProfileLimitation(models.Model):
 
     def activate_profile(self):
         self.ensure_one()
+        self.profile_status = 'active'
         self.start_time = fields.Datetime.now()
         if self.validity[-1].lower() == 'd':
             self.end_time = self.start_time + timedelta(days=int(self.validity[:-1]))
