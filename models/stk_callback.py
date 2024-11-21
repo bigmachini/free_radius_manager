@@ -1,7 +1,6 @@
 import logging
 
-from odoo import models, fields, api
-from datetime import datetime
+from odoo import models, api
 
 
 class STKCallback(models.Model):
