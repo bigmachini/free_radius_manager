@@ -10,15 +10,5 @@
             <field name="interval_type">minutes</field>
             <field name="active" eval="True"/>
         </record>
-
-        <record id="ir_cron_check_and_deactivate_profile_limitation" model="ir.cron">
-            <field name="name">Check and Deactivate Profile Limitation</field>
-            <field name="model_id" ref="model_radius_manager_hotspot_user"/>
-            <field name="state">code</field>
-            <field name="code">model.cron_check_and_deactivate_profile_limitation()</field>
-            <field name="interval_number">10</field>
-            <field name="interval_type">minutes</field>
-            <field name="active" eval="False"/>
-        </record>
     </data>
 </odoo>

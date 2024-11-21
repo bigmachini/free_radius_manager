@@ -55,7 +55,7 @@
                                     <field name="download_speed"/>
                                     <field name="upload_speed"/>
                                     <field name="validity"/>
-                                    <field name="is_activated"/>
+                                    <field name="profile_status"/>
                                 </list>
                             </field>
                         </page>
