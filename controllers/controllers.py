@@ -82,7 +82,7 @@ class RadiusManagerAPI(http.Controller):
             response.append({
                 'id': profile_limitation.id,
                 'name': profile_limitation.name,
-                'uptime': profile_limitation.hotspot_limitation_id.uptime_limit,
+                'uptime': profile_limitation.hotspot_profile_id.validity,
             })
 
         data = json.dumps({'status': True, 'message': 'Packages retrieved successfully', 'data': response})
